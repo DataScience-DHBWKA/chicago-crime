@@ -5,7 +5,13 @@
 \usepackage{amsmath}
 \usepackage{listings}
 \usepackage{biblatex}
+\usepackage{verbatim}
 \usepackage{hyperref}
+\hypersetup{
+colorlinks=true,
+linkcolor=,
+urlcolor=blue
+}
 
 
 \title{Chicago Trip planen: Wann und wo?}
@@ -70,7 +76,16 @@ Zum Schluss, nachdem sichergestellt wurde das die Ergebnisse die vorausgesetzte 
 Für die Durchführung dieser Projektarbeit wurde das Chicago-Crime Dataset aus die Quelle als CSV heruntergeladen.\\
 \\Mit den folgenden Link kommt man an das entsprechende Dataset:\\
 \\
-\url{https://data.cityofchicago.org/Public-Safety/Crimes-2001-to-Present/ijzp-q8t2/data}
+\url{https://data.cityofchicago.org/Public-Safety/Crimes-2001-to-Present/ijzp-q8t2/data}\\
 
+\begin{verbatim}
+
+import pandas as pd
+
+df = pd.read_csv('C:\\Users\\User\\OneDrive\\DHBW\\Erste Semester\\Introduction to Data Science\\DataScienceProjekt\\Python_Programm\\Crimes_-_2001_to_Present.csv')
+
+df
+
+\end{verbatim}
 
 \end{document}
