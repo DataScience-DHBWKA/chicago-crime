@@ -44,9 +44,47 @@ print('Die Variablen Arrest und Domestic sind Ordinal')
 # %%
 chicago_crime_data.info()
 
+# %% [markdown]
+# # 1.x Data Cleaning
+#  Die meisten Datensätze sind nicht vollständig. Die fehlenden Stellen können z.B. entweder fehlender Sorgfalt beim Füllen des Datensatzes von Menschen geschuldet sein, oder manche Daten sind einfach nicht verfügbar. 
+#  - mit isnull().sum() können wir die Anzahl von fehlenden Daten(NaN) jeder Spalte auslesen:
+
 # %%
-null_daten_count = chicago_crime_data.isnull().sum()
+null_daten_count = chicago_crime_data.isnull().sum() #zählt Anzahl an NaN Werten pro Spalte
+null_stellen_count = null_daten_count.sum() #zählt Anzahl an Daten die insgesamt fehlen
+daten_stellen_Insg = chicago_crime_data.shape[0]*chicago_crime_data.shape[1] #zur Darstellung mit print 
+prozent_fehlend = round(100 * null_stellen_count / daten_stellen_Insg, 2)
+
+print("Insgesamt fehlen " + str(null_stellen_count) + " von " + str(daten_stellen_Insg) + " (" + str(prozent_fehlend) + "%) Daten")
+print("Pro Spalte fehlen: ")
 print(null_daten_count)
+
+# %% [markdown]
+# Fehlende Werte (NaN) im Datensatz können manche Auswertungen erschweren oder sogar unmöglich machen. Unser Datensatz hat 7,9 Millionen Reihen, deshalb können wir ohne Probleme Reihen mit NaN löschen, ohne die Statistische Relevanz der Auswertung zu verlieren. Deshalb löschen wir mit .dropna() alle Reihen aus unserem Dataset, die mindestens ein NaN haben: 
+
+# %%
+data_cleaned = chicago_crime_data.dropna()
+
+# %% [markdown]
+# Nun sollten im neuen Dataframe data_cleaned 0 Reihen vorhanden sein, die mindestens ein NaN enthalten:
+
+# %%
+#Berechnung der Anzahl von Feldern ohne Wert
+null_stellen_count = data_cleaned.isnull().sum().sum() #zählt Anzahl an Daten die insgesamt fehlen
+daten_stellen_Insg = data_cleaned.shape[0]*data_cleaned.shape[1] #zur Darstellung mit print 
+prozent_fehlend = round(100 * null_stellen_count / daten_stellen_Insg, 2)
+
+print("Nun fehlen " + str(null_stellen_count) + " von " + str(daten_stellen_Insg) + " (" + str(prozent_fehlend) + "%) Daten")
+
+#Berechnung der Anzahl an Reihen gesamt, die ohne Wert waren
+prozent_reihen_uebrig = round(100 * data_cleaned.shape[0] / chicago_crime_data.shape[0], 2)
+
+print("Der Datensatz hat nach dem Data Cleaning noch " + str(data_cleaned.shape[0]) + "/" + str(chicago_crime_data.shape[0]) + " (" + str(prozent_reihen_uebrig) + ") Reihen")
+
+# %% [markdown]
+# *Die Anzahl an Datenfeldern ist dabei mehr als 1 Prozent gesunken, da pro fehlender Wert die gesamte Reihe an Daten (22 Datenfelder) gelöscht wird, nicht nur das fehlende Datenfeld*
+#
+# ***Ende Data Cleaning kapitel***
 
 # %%
 pd.set_option('display.float_format', '{:.2f}'.format)
@@ -75,9 +113,21 @@ map_obj = fl.Map(location = [41.88194, -87.62778], zoom_start = 10)
 map_obj
 
 # %%
-map_obj.save(r"C:\Users\zbv\Documents\chicago-crime\folium_map.html")
+map_obj.save(r"folium_map.html")
 
 # %% [markdown]
 # ### Nun erstellen wir ein Array der Latitude und Longitude Variablen: test
+
+# %%
+from folium.plugins import HeatMap
+latitude_longitude =[chicago_crime_data['Latitude'],chicago_crime_data['Longitude']]
+latitude_longitude.dropna()
+
+# %%
+HeatMap(latitude_longitude).add_to(map_obj)
+
+# %%
+
+# %%
 
 # %%
