@@ -33,7 +33,7 @@ chicago_crime_data.head()
 # ## Input Variable:
 # - Case Number
 # ## Output Variablen:
-# - Block
+# - Block test
 # - Primary Type
 # - Description
 
