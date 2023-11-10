@@ -21,7 +21,7 @@ import matplotlib.pyplot as plt
 import folium as fo
 
 # %%
-chicago_crime_data = pd.read_csv('C:\\Users\\zbv\\Documents\\chicago-crime-dataset\\Crimes_-_2001_to_Present_20231110.csv')
+chicago_crime_data = pd.read_csv('crimes-chicago-dataset.csv')
 
 # %%
 print('chicago_crime_data hat',chicago_crime_data.shape[1],'spalten und',chicago_crime_data.shape[0],'zeilen.' )

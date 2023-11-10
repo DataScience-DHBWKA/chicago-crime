@@ -36,3 +36,24 @@ Diese kannst du dann verändern, wenn du speicherst werden die Änderungen autom
 Wenn du commitest, wird nur die .py Datei übertragen, da sich mit dieser konfliktlos arbeiten lässt :)
 
 Übrigens: Deine .jpynb Datei wird automatisch beim Commit Prozess ignoriert. Benutze also gerne den projektordner als Arbeitsordner, du musst die .jypnb Datei nicht extra löschen
+
+## Datensatz installieren:
+1: Datensatz runterladen:
+```    
+https://data.cityofchicago.org/Public-Safety/Crimes-2001-to-Present/ijzp-q8t2
+```
+export Button > CSV
+
+- *Online Benutzung des Datensatzes wäre zwar möglich, ist aber langsamer und dann muss bei jeder Benutzung der Link neu eingegeben werden. Deshalb bitte einfach die Anweisungen hier befolgen, denn sonst wird bei jedem commit der Datensatz Ort im Notebook verändert --> alle andern müssen ihn dann wieder bei sich ändern. Mit der hier gezeigten Methode bleibt es konsistent und jeder kann einfach loslegen mit programmieren, ohne den Datensatz Ort zu verändern*
+
+2: Datei umbenennen auf:
+```
+crimes-chicago-dataset
+```
+*csv Dateiendung beibehalten*
+
+3: Den Datensatz jetzt in den Projektordner verschieben (der Ordner chicago-crime, der nach dem pullen von github auf deinem Pc erstellt wird)
+
+4: Jetzt kann der das Notebook ausgeführt werden und der Datensatz sollte sofort richtig erkannt werden
+
+***Datensatz nicht woanders speichern und im Code den Ort ändern, das das nach dem Commit alle beinflusst***
