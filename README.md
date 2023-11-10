@@ -6,16 +6,16 @@
 - Vincent Merkel
 ## Unsere Fragestellung
 Wir finden eine spannende und passende frage zu unserem Projekt wäre, wie solltet man Urlaub nach Chicago planen?
-## Konkretere fragen um unseren Projekt zu leiten
+## Leitfragen
 - Welche regionen sind am gefährlichsten in Chicago?
 - Wo sind die meiste schwerwiegende verbrechen geschehen?
 
-## jupytext installieren:
+## Jupytext installieren:
 Einleitung: Da das mergen von .jypnb Dateien fast immer Konflikte verursacht, müssen wir eine Art workaround verwenden. Anstatt eine .jypnb Datei auf Github zu haben, die wir verändern und mergen, speichern wir unser Notebook mit der jupytext Anwendung als .py Datei (im percent Format). Wenn du nun daheim am Notebook arbeiten willst, lade dir einfach mit pull die neueste Version des repositorys runter und öffne die .py Datei dann in Jupyterlab als Notebook. Wenn du dann speicherst, wird vollautomatisch eine lokale .jypnb Datei erstellt, in der du dann arbeitest. Deine Änderungen werden dabei sowohl in der .jpynb Datei als auch in der .py Datei gespeichert, wenn du dann aber commitest (=hochlädst), wird nur die .py Datei hochgeladen. So vermeiden wir die konflikte, da .py Dateien sich konfliktlos mergen lassen
 
 mehr infos: https://github.com/mwouts/jupytext
 
-***Um mit jupytext arbeiten zu können (benötigt für dieses Projekt), musst du die folgenden Schritte befolgen***
+***Um mit Jupytext arbeiten zu können (benötigt für dieses Projekt), musst du die folgenden Schritte befolgen***
 
 1: Anaconda Navigator > Enviroments > Base(root) > "Play button drücken" > open terminal
 
