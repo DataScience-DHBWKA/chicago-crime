@@ -34,3 +34,5 @@ pip install jupytext
 
 Diese kannst du dann verändern, wenn du speicherst werden die Änderungen automatisch auf .py und auf .jpynb gespeichert.
 Wenn du commitest, wird nur die .py Datei übertragen, da sich mit dieser konfliktlos arbeiten lässt :)
+
+Übrigens: Deine .jpynb Datei wird automatisch beim Commit Prozess ignoriert. Benutze also gerne den projektordner als Arbeitsordner, du musst die .jypnb Datei nicht extra löschen
