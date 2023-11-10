@@ -18,7 +18,7 @@ import numpy as np
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
-import folium as fo
+import folium as fl
 
 # %%
 chicago_crime_data = pd.read_csv('crimes-chicago-dataset.csv')
@@ -70,7 +70,7 @@ plt.show()
 #  - Tutorial: https://wellsr.com/python/plotting-geographical-heatmaps-with-python-folium-module/
 
 # %%
-map_obj = f.Map(location = [41.88194, -87.62778], zoom_start = 10)
+map_obj = fl.Map(location = [41.88194, -87.62778], zoom_start = 10)
 
 map_obj
 
