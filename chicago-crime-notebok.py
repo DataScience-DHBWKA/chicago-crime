@@ -100,7 +100,7 @@ print("Der Datensatz hat nach Ausschließung der häuslichen Verbrechen noch " +
 # In manchen Auswertungen wollen wir nur ein bestimmtes Jahr beachten. Um das ressourcenintensive Erstellen eines Dataframes bei jeder Operation, bei der ein solches Array gebraucht wird, zu vermeiden, wollen wir ein neues Dataframe erstellen, welches nur die Werte der Verbrechen enthält, die im Jahr 2019 passiert sind
 
 # %%
-nur2019 = data_cleaned[data_cleaned['Year'] == 2019]
+nur2019 = crimes_public[data_cleaned['Year'] == 2019]
 
 # %% [markdown]
 # ***Ende Data Cleaning kapitel***
