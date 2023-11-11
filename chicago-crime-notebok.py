@@ -89,18 +89,19 @@ print("Der Datensatz hat nach dem Data Cleaning noch " + str(data_cleaned.shape[
 # Da wir mit unserer Auswertung herausfinden wollen, wo ein Urlaubstrip nach Chicago am wichtigsten ist, können wir alle Verbrechen aus dem Datensatz herausfiltern, die in der Öffentlichkeit geschehen sind. Häusliche Verbrechen betreffen uns als Urlauber eher nicht.
 
 # %%
-crimes_public = data_cleaned[data_cleaned['Domestic'] == False]
+crimes_public = data_cleaned.loc[data_cleaned['Domestic'] == False]
 
 #Prozent Berechnung der Übrigen Reihen nach Ausschluss von häuslichen Verbrechen
 prozent_reihen_uebrig = round(100 * crimes_public.shape[0] / data_cleaned.shape[0], 2)
 print("Der Datensatz hat nach Ausschließung der häuslichen Verbrechen noch " + str(crimes_public.shape[0]) + "/" + str(data_cleaned.shape[0]) + "(" + str(prozent_reihen_uebrig) + "%) Reihen vom gecleaned Datensatz übrig")
+data_cleaned = crimes_public
 
 # %% [markdown]
 # ### Begrenzung auf ein Jahr
 # In manchen Auswertungen wollen wir nur ein bestimmtes Jahr beachten. Um das ressourcenintensive Erstellen eines Dataframes bei jeder Operation, bei der ein solches Array gebraucht wird, zu vermeiden, wollen wir ein neues Dataframe erstellen, welches nur die Werte der Verbrechen enthält, die im Jahr 2019 passiert sind
 
 # %%
-nur2019 = crimes_public[data_cleaned['Year'] == 2019]
+nur2019 = data_cleaned.loc[data_cleaned['Year'] == 2019]
 
 # %% [markdown]
 # ***Ende Data Cleaning kapitel***
