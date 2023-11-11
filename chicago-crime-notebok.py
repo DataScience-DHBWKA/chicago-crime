@@ -19,6 +19,7 @@ import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 import folium as fl
+from folium.plugins import HeatMap
 
 # %%
 chicago_crime_data = pd.read_csv('crimes-chicago-dataset.csv')
@@ -63,7 +64,7 @@ print(null_daten_count)
 # Fehlende Werte (NaN) im Datensatz können manche Auswertungen erschweren oder sogar unmöglich machen. Unser Datensatz hat 7,9 Millionen Reihen, deshalb können wir ohne Probleme Reihen mit NaN löschen, ohne die Statistische Relevanz der Auswertung zu verlieren. Deshalb löschen wir mit .dropna() alle Reihen aus unserem Dataset, die mindestens ein NaN haben: 
 
 # %%
-data_cleaned = chicago_crime_data.dropna()
+data_cleaned = chicago_crime_data.dropna(ignore_index='true')
 
 # %% [markdown]
 # Nun sollten im neuen Dataframe data_cleaned 0 Reihen vorhanden sein, die mindestens ein NaN enthalten:
@@ -84,6 +85,13 @@ print("Der Datensatz hat nach dem Data Cleaning noch " + str(data_cleaned.shape[
 # %% [markdown]
 # *Die Anzahl an Datenfeldern ist dabei mehr als 1 Prozent gesunken, da pro fehlender Wert die gesamte Reihe an Daten (22 Datenfelder) gelöscht wird, nicht nur das fehlende Datenfeld*
 #
+# ### Begrenzung auf ein Jahr
+# In manchen Auswertungen wollen wir nur ein bestimmtes Jahr beachten. Um das ressourcenintensive Erstellen eines Dataframes bei jeder Operation, bei der ein solches Array gebraucht wird, zu vermeiden, wollen wir ein neues Dataframe erstellen, welches nur die Werte der Verbrechen enthält, die im Jahr 2019 passiert sind
+
+# %%
+nur2019 = data_cleaned[data_cleaned['Year'] == 2019]
+
+# %% [markdown]
 # ***Ende Data Cleaning kapitel***
 
 # %%
@@ -106,6 +114,7 @@ plt.show()
 # ### Karte von Chicago mit Heatmap
 #  - Wir beginnen indem wir ein Folium Kartenobjekt von Chicago erstellen
 #  - Tutorial: https://wellsr.com/python/plotting-geographical-heatmaps-with-python-folium-module/
+#  - Idee: Mit Mittelwert Analyse der Long und Lat den Mittelpunkt der Karte bestimmen
 
 # %%
 map_obj = fl.Map(location = [41.88194, -87.62778], zoom_start = 10)
@@ -113,18 +122,15 @@ map_obj = fl.Map(location = [41.88194, -87.62778], zoom_start = 10)
 map_obj
 
 # %%
-map_obj.save(r"folium_map.html")
+map_obj.save("folium_map.html")
 
 # %% [markdown]
 # ### Nun erstellen wir ein Array der Latitude und Longitude Variablen: test
 
 # %%
-from folium.plugins import HeatMap
-latitude_longitude =[chicago_crime_data['Latitude'],chicago_crime_data['Longitude']]
-latitude_longitude.dropna()
-
-# %%
-HeatMap(latitude_longitude).add_to(map_obj)
+lat_long = nur2019[['Latitude', 'Longitude']].values.tolist()
+HeatMap(lat_long, 0.3).add_to(map_obj)
+map_obj
 
 # %%
 
