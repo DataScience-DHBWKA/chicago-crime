@@ -132,8 +132,125 @@ lat_long = nur2019[['Latitude', 'Longitude']].values.tolist()
 HeatMap(lat_long, 0.3).add_to(map_obj)
 map_obj
 
-# %%
+# %% [markdown]
+# # I. Vergleich früher/heute.
+
+# %% [markdown]
+# ## 1. Vorbereitung der Daten.
+
+# %% [markdown]
+# Um Konflikte zu vermeiden, wird in diesem Teil zunächst der Datensatz nochmal in ein neues Data Frame geladen.
 
 # %%
+chicago_crime_data_vergleich_frueher_heute = pd.read_csv('crimes-chicago-dataset.csv')
+
+# %% [markdown]
+# Und die einzige Spalten die behalten werden sind die Spalte Date und die Spalte Primary Type.
 
 # %%
+columns_to_keep = ['Date', 'Primary Type']
+chicago_crime_data_vergleich_frueher_heute = chicago_crime_data_vergleich_frueher_heute[columns_to_keep]
+
+# %% [markdown]
+# Damit die Analyse einfacher wird, werden in die Spalte Date nur die Jahre behalten.
+
+# %%
+chicago_crime_data_vergleich_frueher_heute['Date'] = pd.to_datetime(chicago_crime_data_vergleich_frueher_heute['Date'])
+chicago_crime_data_vergleich_frueher_heute['Year'] = chicago_crime_data_vergleich_frueher_heute['Date'].dt.year
+chicago_crime_data_vergleich_frueher_heute = chicago_crime_data_vergleich_frueher_heute.drop('Date', axis=1)
+
+# %% [markdown]
+# ## 2. Klassifizierung der Verbrechen.
+
+# %% [markdown]
+# Verbrechen sind vielfältig und reichen von vergleichsweise harmlosen Vorkommnissen bis hin zu schwerwiegenden Delikten. In diesem Teil der Analyse werden Verbrechen anhand verschiedener Kriterien wie Gewaltanwendung, potenzielle Schädlichkeit für Opfer und die Schwere der Gesetzesverletzung klassifiziert. Vorfälle, die physische oder emotionale Bedrohungen, schwerwiegende Schäden oder schwerwiegende Gesetzesverstöße aufweisen, werden als schwerwiegend eingestuft. Vorfälle, die geringere Gefahren oder weniger erhebliche Gesetzesübertretungen darstellen, werden als weniger schwerwiegend betrachtet.
+
+# %% [markdown]
+# Zunächst wird versucht, eine klare Klassifizierung durchzuführen.
+
+# %%
+unique_types = chicago_crime_data_vergleich_frueher_heute['Primary Type'].unique()
+print(unique_types)
+
+# %%
+schwerwiegende_verbrechen = ['THEFT', 'ASSAULT', 'WEAPONS VIOLATION','SEX OFFENSE','CRIM SEXUAL ASSAULT','MOTOR VEHICLE THEFT','CRIMINAL TRESPASS','ROBBERY','PUBLIC PEACE VIOLATION','CRIMINAL SEXUAL ASSAULT','HOMICIDE', 'KIDNAPPING','HUMAN TRAFFICKING']
+
+
+# %%
+def classify_crime(crime_type):
+    if crime_type in schwerwiegende_verbrechen:
+        return 'Schwerwiegend'
+    else:
+        return 'Nicht Schwerwiegend'
+
+chicago_crime_data_vergleich_frueher_heute['Schwere Klassifizierung'] = chicago_crime_data_vergleich_frueher_heute['Primary Type'].apply(classify_crime)
+
+# %% [markdown]
+# ## 3.Gruppierung nach Jahren.
+
+# %% [markdown]
+# Um die Analyse durchführen zu können, werden jetzt die Daten nach Jahren gruppiert, und die Anzahl schwerwiegende und nicht schwerwiegende Verbrechen für jedes Jahr summiert.
+
+# %%
+grouped_data = chicago_crime_data_vergleich_frueher_heute.groupby(['Year', 'Schwere Klassifizierung']).size().unstack()
+
+grouped_data = grouped_data.fillna(0)
+
+print(grouped_data)
+
+# %% [markdown]
+# Diese Daten werden jetzt in Graphen, um Sie zu veranschaulichen, präsentiert.
+
+# %%
+grouped_data.plot(kind='bar', stacked=True, color=['lightgrey','#FF6347'])
+plt.title('Anzahl der schwerwiegenden und nicht-schwerwiegenden Verbrechen pro Jahr')
+plt.xlabel('Jahr')
+plt.ylabel('Anzahl Verbrechen')
+plt.legend(title='Schwere Klassifizierung')
+plt.show()
+
+# %%
+grouped_data['Schwerwiegend'].plot(kind='line', color='red', marker='o', label='Schwerwiegend')
+grouped_data['Nicht Schwerwiegend'].plot(kind='line', color='gray', marker='o', label='Nicht Schwerwiegend')
+plt.title('Anzahl der schwerwiegenden und nicht-schwerwiegenden Verbrechen pro Jahr')
+plt.xlabel('Jahr')
+plt.ylabel('Anzahl Verbrechen')
+plt.legend(title='Schwere Klassifizierung')
+plt.show()
+
+# %% [markdown]
+# Es ist zu erkennen, dass die Gesamtzahl an Verbrechen sich stark reduziert hat. Aber es ist nicht wegzulassen, dass im Jahr 2022 die Anzahl an schwerwiegende Verbrechen stark gewachsen ist, und diese zum ersten Mal die Anzahl der nicht schwerwiegende Verbrechen übertroffen hat.
+
+# %%
+# Filtern nach schwerwiegenden Verbrechen
+schwere_verbrechen_2021 = crimes_2021[crimes_2021['Schwere Klassifizierung'] == 'Schwerwiegend']
+schwere_verbrechen_2022 = crimes_2022[crimes_2022['Schwere Klassifizierung'] == 'Schwerwiegend']
+
+# Gruppieren und Zählen der schwerwiegenden Verbrechen für 2021 und 2022
+schwere_verbrechen_2021_grouped = schwere_verbrechen_2021.groupby('Primary Type').size().sort_values(ascending=False)
+schwere_verbrechen_2022_grouped = schwere_verbrechen_2022.groupby('Primary Type').size().sort_values(ascending=False)
+
+# Zunahme der schwerwiegenden Verbrechen im Jahr 2022 im Vergleich zu 2021
+increase_schwere_verbrechen_2022_vs_2021 = schwere_verbrechen_2022_grouped - schwere_verbrechen_2021_grouped
+print(increase_schwere_verbrechen_2022_vs_2021)
+
+# %%
+import matplotlib.pyplot as plt
+
+increase_schwere_verbrechen_2022_vs_2021.plot(kind='bar', color='red')
+plt.title('Zunahme schwerwiegender Verbrechen 2022 vs. 2021')
+plt.xlabel('Verbrechenstyp')
+plt.ylabel('Zunahme')
+plt.xticks(rotation=90)
+plt.show()
+
+# %% [markdown]
+# Es ist klar zu erkennen, dass Verbrechen, die mit Diebstahl zu tun haben, im Jahr 2022 stark gewachsen sind.
+
+# %% [markdown]
+# ## 5. Schlussfolgerungen und Implikationen:
+
+# %% [markdown]
+# Nach den Daten ist es klar zu erkennen, dass die Anzahl der gemeldeten Straftaten seit 2001 stark gesunken ist, was eine positive Entwicklung nachweist.
+# Nicht desto trotz ist die Anzahl der gemeldeten Diebstahlfälle im Jahr 2022 im Vergleich zum Jahr 2021 stark gewachsen, deswegen ist es ratsam, in einen Trip nach Chicago dies mitzurechnen und wertvolle Gegenstände nicht mit sich mitnehmen.
+# Aber als klare Schlussfolgerung kann man sagen, dass Chicago heute viel sicherer ist im Vergleich zu früheren Jahren.
