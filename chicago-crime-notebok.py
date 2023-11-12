@@ -145,10 +145,10 @@ HeatMap(lat_long, 0.3).add_to(map_obj)
 map_obj
 
 # %% [markdown]
-# # I. Vergleich früher/heute.
+# # Vergleich früher/heute.
 
 # %% [markdown]
-# ## 1. Vorbereitung der Daten.
+# ## Vorbereitung der Daten.
 
 # %% [markdown]
 # Um Konflikte zu vermeiden, wird in diesem Teil zunächst der Datensatz nochmal in ein neues Data Frame geladen.
@@ -172,7 +172,7 @@ chicago_crime_data_vergleich_frueher_heute['Year'] = chicago_crime_data_vergleic
 chicago_crime_data_vergleich_frueher_heute = chicago_crime_data_vergleich_frueher_heute.drop('Date', axis=1)
 
 # %% [markdown]
-# ## 2. Klassifizierung der Verbrechen.
+# ## Klassifizierung der Verbrechen.
 
 # %% [markdown]
 # Verbrechen sind vielfältig und reichen von vergleichsweise harmlosen Vorkommnissen bis hin zu schwerwiegenden Delikten. In diesem Teil der Analyse werden Verbrechen anhand verschiedener Kriterien wie Gewaltanwendung, potenzielle Schädlichkeit für Opfer und die Schwere der Gesetzesverletzung klassifiziert. Vorfälle, die physische oder emotionale Bedrohungen, schwerwiegende Schäden oder schwerwiegende Gesetzesverstöße aufweisen, werden als schwerwiegend eingestuft. Vorfälle, die geringere Gefahren oder weniger erhebliche Gesetzesübertretungen darstellen, werden als weniger schwerwiegend betrachtet.
@@ -198,7 +198,7 @@ def classify_crime(crime_type):
 chicago_crime_data_vergleich_frueher_heute['Schwere Klassifizierung'] = chicago_crime_data_vergleich_frueher_heute['Primary Type'].apply(classify_crime)
 
 # %% [markdown]
-# ## 3.Gruppierung nach Jahren.
+# ## Gruppierung nach Jahren.
 
 # %% [markdown]
 # Um die Analyse durchführen zu können, werden jetzt die Daten nach Jahren gruppiert, und die Anzahl schwerwiegende und nicht schwerwiegende Verbrechen für jedes Jahr summiert.
@@ -260,7 +260,7 @@ plt.show()
 # Es ist klar zu erkennen, dass Verbrechen, die mit Diebstahl zu tun haben, im Jahr 2022 stark gewachsen sind.
 
 # %% [markdown]
-# ## 5. Schlussfolgerungen und Implikationen:
+# ## Schlussfolgerungen und Implikationen:
 
 # %% [markdown]
 # Nach den Daten ist es klar zu erkennen, dass die Anzahl der gemeldeten Straftaten seit 2001 stark gesunken ist, was eine positive Entwicklung nachweist.
