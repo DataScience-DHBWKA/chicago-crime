@@ -291,7 +291,7 @@ if (input_verwenden == True):
 #Karte ausgeben und speichern   
 if (input_verwenden == True):
     karte_Chicago_Inputmarker.save('Karten/Chicago_Inputmarker_heatmap.html')
-karte_Chicago_Inputmarker
+    display(karte_Chicago_Inputmarker)
 
 # %% [markdown]
 # # Vergleich früher/heute.
