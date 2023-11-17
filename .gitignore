@@ -163,3 +163,4 @@ cython_debug/
 *.csv
 folium_map.html
 folium_map.html
+*.html
