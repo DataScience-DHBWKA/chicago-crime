@@ -143,6 +143,8 @@ crimes_nach_2015 = data_cleaned.loc[data_cleaned['Year'] >= 2015]
 # %%
 karte_Chicago = fl.Map(location = [41.863474, -87.613654], zoom_start = 11, control_scale=True,)
 os.makedirs('Karten', exist_ok=True)
+
+#Karte ausgeben und speichern
 karte_Chicago.save('Karten/Chicago_Karte.html')
 karte_Chicago
 
@@ -151,9 +153,10 @@ karte_Chicago
 
 # %%
 lat_long = crimes_nach_2015[['Latitude', 'Longitude']].values.tolist()
-karte_Chicago_Heatmap = karte_Chicago #Übertragen der vorher erstellten Karte zur Weiterverwendung
+karte_Chicago_Heatmap = karte_Chicago #Referenzkopie der leeren Karte
 HeatMap(lat_long, 0.3).add_to(karte_Chicago_Heatmap)
 
+#Karte ausgeben und speichern
 karte_Chicago_Heatmap.save('Karten/Chicago_Heatmap.html')
 karte_Chicago_Heatmap
 
@@ -191,20 +194,22 @@ HeatMap(lat_long, 0.3).add_to(vergleich.m1)
 #Steuerungsobjekte hinzufügen
 fl.LayerControl(collapsed=True, show=False).add_to(vergleich)
 
-#Ausgabe der Karte
+#Karte ausgeben und speichern
 vergleich.save('Karten/Chicago_Vergleich_Heatmap_Satellit.html')
 vergleich
 
 # %% [markdown]
 # Wir können also sehen, das in dichter besiedelten und bebauten Gebieten mehr Verbrechen geschehen. Somit kann man als allgemeine Handlungsempfehlung sagen, das man für einen möglichst sicheren Chicago Trip dicht besiedelte Orte eher meiden sollte.
 #
-# Um nun konkretere Reiseempfelungen treffen zu können, sollte man interesannte Reiseziele oder Hotels erst in dieser Karte aufsuchen, um deren Sicherheit zu bestimmen. Als Beispiel fügen wir einige Hotels mit deren Koordinaten in die karte als Marker ein:
+# Um nun konkretere Reiseempfelungen treffen zu können, sollte man interesannte Reiseziele oder Hotels erst in dieser Karte aufsuchen, um deren Sicherheit zu bestimmen. Als Beispiel fügen wir einige Hotels mit deren Koordinaten in der Karte als Marker ein:
 
 # %%
+#Refernenzkopie der Karte auf ein neues Kartenobjekt, Zentrieren auf die Koordinaten von Hotel 2
 marker_Chicago_Heatmap = karte_Chicago_Heatmap
 marker_Chicago_Heatmap.zoom_start= 11
 marker_Chicago_Heatmap.location= [41.88612445681384, -87.63367468354781]
 
+#Hotelmarker hinzufügen
 fl.Marker(
     location=[41.895194867728925, -87.61606169978471],
     tooltip="W Chicago - Lakeshore",
@@ -221,6 +226,7 @@ fl.Marker(
     popup="https://maps.app.goo.gl/U61Rx65AYDoEDjsu9",
     icon=fl.Icon(color="red", icon="3", prefix='fa',),).add_to(marker_Chicago_Heatmap);
 
+#Karte ausgeben und speichern
 marker_Chicago_Heatmap.save('Karten/Chicago_Heatmap_Marker.html')
 marker_Chicago_Heatmap
 
