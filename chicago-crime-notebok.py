@@ -315,15 +315,26 @@ chicago_crime_data_vergleich_frueher_heute = pd.read_csv('crimes-chicago-dataset
 # Und die einzige Spalten die behalten werden sind die Spalte Date und die Spalte Primary Type.
 
 # %%
-columns_to_keep = ['Date', 'Primary Type']
-chicago_crime_data_vergleich_frueher_heute = chicago_crime_data_vergleich_frueher_heute[columns_to_keep]
+spalten_zum_behalten = ['Date', 'Primary Type']
+chicago_crime_data_vergleich_frueher_heute = chicago_crime_data_vergleich_frueher_heute[spalten_zum_behalten]
 
 # %% [markdown]
 # Damit die Analyse einfacher wird, werden in die Spalte Date nur die Jahre behalten.
+# Dafür wird zuerst der Datentyp für die Spalte 'Date', was aktuell ein objekt ist, auf 'Date' bzw. Datum mit pandas konvertiert.
 
 # %%
 chicago_crime_data_vergleich_frueher_heute['Date'] = pd.to_datetime(chicago_crime_data_vergleich_frueher_heute['Date'])
+
+# %% [markdown]
+# Die Jahre werden jetzt in eine Neue Spalte 'Year' gespeichert.
+
+# %%
 chicago_crime_data_vergleich_frueher_heute['Year'] = chicago_crime_data_vergleich_frueher_heute['Date'].dt.year
+
+# %% [markdown]
+# Da die Spalte 'Year' jetzt nicht mehr gebraucht wird, wird die jetzt mit die drop Funktion gelöscht.
+
+# %%
 chicago_crime_data_vergleich_frueher_heute = chicago_crime_data_vergleich_frueher_heute.drop('Date', axis=1)
 
 # %% [markdown]
@@ -333,7 +344,7 @@ chicago_crime_data_vergleich_frueher_heute = chicago_crime_data_vergleich_fruehe
 # Verbrechen sind vielfältig und reichen von vergleichsweise harmlosen Vorkommnissen bis hin zu schwerwiegenden Delikten. In diesem Teil der Analyse werden Verbrechen anhand verschiedener Kriterien wie Gewaltanwendung, potenzielle Schädlichkeit für Opfer und die Schwere der Gesetzesverletzung klassifiziert. Vorfälle, die physische oder emotionale Bedrohungen, schwerwiegende Schäden oder schwerwiegende Gesetzesverstöße aufweisen, werden als schwerwiegend eingestuft. Vorfälle, die geringere Gefahren oder weniger erhebliche Gesetzesübertretungen darstellen, werden als weniger schwerwiegend betrachtet.
 
 # %% [markdown]
-# Zunächst wird versucht, eine klare Klassifizierung durchzuführen.
+# Zunächst wird die Klassifizierung durchgeführt.
 
 # %%
 unique_types = chicago_crime_data_vergleich_frueher_heute['Primary Type'].unique()
@@ -344,13 +355,13 @@ schwerwiegende_verbrechen = ['THEFT', 'ASSAULT', 'WEAPONS VIOLATION','SEX OFFENS
 
 
 # %%
-def classify_crime(crime_type):
+def klassifizieren(crime_type):
     if crime_type in schwerwiegende_verbrechen:
         return 'Schwerwiegend'
     else:
         return 'Nicht Schwerwiegend'
 
-chicago_crime_data_vergleich_frueher_heute['Schwere Klassifizierung'] = chicago_crime_data_vergleich_frueher_heute['Primary Type'].apply(classify_crime)
+chicago_crime_data_vergleich_frueher_heute['Schwere Klassifizierung'] = chicago_crime_data_vergleich_frueher_heute['Primary Type'].apply(klassifizieren)
 
 # %% [markdown]
 # ## Gruppierung nach Jahren.
@@ -388,23 +399,34 @@ plt.show()
 # %% [markdown]
 # Es ist zu erkennen, dass die Gesamtzahl an Verbrechen sich stark reduziert hat. Aber es ist nicht wegzulassen, dass im Jahr 2022 die Anzahl an schwerwiegende Verbrechen stark gewachsen ist, und diese zum ersten Mal die Anzahl der nicht schwerwiegende Verbrechen übertroffen hat.
 
+# %% [markdown]
+# Diesen Ereigniss wird nochmal tiefer untersucht, um zu sehen welche konkrete verbrechen am meisten zugenommen haben.
+
+# %% [markdown]
+# Dafür werden die Daten aus den Jahren 2021 und 2022 extrahiert
+
 # %%
-# Filtern nach schwerwiegenden Verbrechen
 schwere_verbrechen_2021 = crimes_2021[crimes_2021['Schwere Klassifizierung'] == 'Schwerwiegend']
 schwere_verbrechen_2022 = crimes_2022[crimes_2022['Schwere Klassifizierung'] == 'Schwerwiegend']
 
-# Gruppieren und Zählen der schwerwiegenden Verbrechen für 2021 und 2022
+# %% [markdown]
+# Und dann werden davon die Schwerwiegende verbrechen gruppiert und extrahiert. Die Nicht Schwerwiegende werden ignoriert.
+
+# %%
 schwere_verbrechen_2021_grouped = schwere_verbrechen_2021.groupby('Primary Type').size().sort_values(ascending=False)
 schwere_verbrechen_2022_grouped = schwere_verbrechen_2022.groupby('Primary Type').size().sort_values(ascending=False)
 
-# Zunahme der schwerwiegenden Verbrechen im Jahr 2022 im Vergleich zu 2021
-increase_schwere_verbrechen_2022_vs_2021 = schwere_verbrechen_2022_grouped - schwere_verbrechen_2021_grouped
-print(increase_schwere_verbrechen_2022_vs_2021)
+# %% [markdown]
+# Und zulätzt für jeden Konkretes Schwerwiegendes Verbrechen die zunahme berechnet.
+
+# %%
+zunahme_schwere_verbrechen_2022_vs_2021 = schwere_verbrechen_2022_grouped - schwere_verbrechen_2021_grouped
+print(zunahme_schwere_verbrechen_2022_vs_2021)
 
 # %%
 import matplotlib.pyplot as plt
 
-increase_schwere_verbrechen_2022_vs_2021.plot(kind='bar', color='red')
+zunahme_schwere_verbrechen_2022_vs_2021.plot(kind='bar', color='red')
 plt.title('Zunahme schwerwiegender Verbrechen 2022 vs. 2021')
 plt.xlabel('Verbrechenstyp')
 plt.ylabel('Zunahme')
@@ -418,6 +440,6 @@ plt.show()
 # ## Schlussfolgerungen und Implikationen:
 
 # %% [markdown]
-# Nach den Daten ist es klar zu erkennen, dass die Anzahl der gemeldeten Straftaten seit 2001 stark gesunken ist, was eine positive Entwicklung nachweist.
-# Nicht desto trotz ist die Anzahl der gemeldeten Diebstahlfälle im Jahr 2022 im Vergleich zum Jahr 2021 stark gewachsen, deswegen ist es ratsam, in einen Trip nach Chicago dies mitzurechnen und wertvolle Gegenstände nicht mit sich mitnehmen.
-# Aber als klare Schlussfolgerung kann man sagen, dass Chicago heute viel sicherer ist im Vergleich zu früheren Jahren.
+# Nach der durchgeführten Analyse ist es schlusszufolgern, dass die Anzahl der gemeldeten Straftaten seit 2001 stark gesunken ist, was eine positive Entwicklung nachweist.
+# Nicht desto trotz ist die Anzahl der gemeldeten Diebstahlfälle im Jahr 2022 im Vergleich zum Jahr 2021 stark gewachsen, deswegen ist es ratsam, in einem Trip nach Chicago dies mitzurechnen und wertvolle Gegenstände nicht mit sich mitnehmen.
+# Aber es ist fear als Schlussfolgerung zu sagen, dass Chicago heute viel sicherer ist im Vergleich zu früheren Jahren.
