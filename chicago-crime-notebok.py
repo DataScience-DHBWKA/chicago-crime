@@ -338,6 +338,22 @@ chicago_crime_data_vergleich_frueher_heute['Year'] = chicago_crime_data_vergleic
 chicago_crime_data_vergleich_frueher_heute = chicago_crime_data_vergleich_frueher_heute.drop('Date', axis=1)
 
 # %% [markdown]
+# # Sichere Tageszeiten?.
+
+# %%
+chicago_crime_data.Date = pd.to_datetime(chicago_crime_data.Date)
+day_of_month_chicago_crime_data = chicago_crime_data['Date'].dt.hour
+day_of_month_chicago_crime_data = day_of_month_chicago_crime_data.dropna()
+sns.histplot(day_of_month_chicago_crime_data, kde=False, bins=24)
+
+# %% [markdown]
+# Im Histogramm können wir die Tageszeiten der Verbrechen sehen.
+# Man kann erkennen, dass nachts weniger Verbrechen geschehen als tagsüber.
+# Aufgrunddessen, dass jeweils 0 und 12 Uhr Ausreißer sind, vermuten wir, dass bei Verbrechen, bei denen die Zeit ungenau war, diese auf 0 oder 12 Uhr ab/aufgerundet werden.
+# Mit dieser Vermutung entsteht ein plausibler Graph. Man sagt zwar, dass es nachts gefährlicher ist als tagsüber normalerweise, aber ausgehend davon,
+# dass nachts weniger Menschen wach sind, gibt es auch weniger Menschen die Verbrechen begehen können.
+
+# %% [markdown]
 # ## Klassifizierung der Verbrechen.
 
 # %% [markdown]
