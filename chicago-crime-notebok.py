@@ -346,6 +346,9 @@ day_of_month_chicago_crime_data = chicago_crime_data['Date'].dt.hour
 day_of_month_chicago_crime_data = day_of_month_chicago_crime_data.dropna()
 sns.histplot(day_of_month_chicago_crime_data, kde=False, bins=24)
 
+# %%
+chicago_crime_data.head()
+
 # %% [markdown]
 # Im Histogramm können wir die Tageszeiten der Verbrechen sehen.
 # Man kann erkennen, dass nachts weniger Verbrechen geschehen als tagsüber.
