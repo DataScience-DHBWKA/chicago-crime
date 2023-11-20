@@ -16,8 +16,10 @@
 import pandas as pd
 from matplotlib import pyplot as plt
 from datetime import datetime
+
 df = pd.read_csv ('crimes-chicago-dataset.csv')
 df['Date'] = pd.to_datetime(df['Date'])
+
 def get_season(date):
     month = date.month
     if 3 <= month <= 5:
