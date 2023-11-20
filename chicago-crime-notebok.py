@@ -20,6 +20,7 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 import folium as fl
 import os
+from datetime import datetime
 from folium.plugins import HeatMap
 from folium.plugins import DualMap
 
@@ -341,13 +342,13 @@ chicago_crime_data_vergleich_frueher_heute = chicago_crime_data_vergleich_fruehe
 # # Sichere Tageszeiten?.
 
 # %%
-chicago_crime_data.Date = pd.to_datetime(chicago_crime_data.Date)
-day_of_month_chicago_crime_data = chicago_crime_data['Date'].dt.hour
-day_of_month_chicago_crime_data = day_of_month_chicago_crime_data.dropna()
-sns.histplot(day_of_month_chicago_crime_data, kde=False, bins=24)
+TODO: explain myself lmao
 
 # %%
-chicago_crime_data.head()
+chicago_crime_data.Date = pd.to_datetime(chicago_crime_data.Date)
+day_of_month_chicago_crime_data = chicago_crime_data['Date'].dt.hour
+sns.histplot(day_of_month_chicago_crime_data, kde=False, bins=24)
+
 
 # %% [markdown]
 # Im Histogramm können wir die Tageszeiten der Verbrechen sehen.
@@ -355,6 +356,38 @@ chicago_crime_data.head()
 # Aufgrunddessen, dass jeweils 0 und 12 Uhr Ausreißer sind, vermuten wir, dass bei Verbrechen, bei denen die Zeit ungenau war, diese auf 0 oder 12 Uhr ab/aufgerundet werden.
 # Mit dieser Vermutung entsteht ein plausibler Graph. Man sagt zwar, dass es nachts gefährlicher ist als tagsüber normalerweise, aber ausgehend davon,
 # dass nachts weniger Menschen wach sind, gibt es auch weniger Menschen die Verbrechen begehen können.
+
+# %% [markdown]
+# # Sichere Jahreszeiten?.
+
+# %% [markdown]
+# Wir fangen an, indem wir eine Methode definieren, die uns die Jahreszeit je nach Monat angibt.
+# Danach erstellen wir eine neue Spalte, die uns die Jahreszeit des jeweiligen Verbrechens zurückgibt.
+# Wir erstellen daraufhin ein Balkendiagramm, dass uns eine visuelle Übersicht über die jeweilige Jahreszeit gibt.
+#
+
+# %%
+
+def get_season(date):
+    month = date.month
+    if 3 <= month <= 5:
+        return "Frühling"
+    elif 6 <= month <= 8:
+        return "Sommer"
+    elif 9 <= month <= 11:
+        return "Herbst"
+    else:
+        return "Winter"
+
+chicago_crime_data['Jahreszeit'] = chicago_crime_data['Date'].apply(get_season)
+
+chicago_crime_data_grouped = chicago_crime_data.groupby('Jahreszeit')['Case Number'].size()
+
+plt.bar(chicago_crime_data_grouped.index, chicago_crime_data_grouped.values, color=['green', 'orange', 'red', 'blue'])
+plt.title('Balkendiagramm nach Jahreszeiten')
+plt.xlabel('Jahreszeit')
+plt.ylabel('Summe der Werte')
+plt.show()
 
 # %% [markdown]
 # ## Klassifizierung der Verbrechen.
