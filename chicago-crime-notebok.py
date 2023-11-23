@@ -33,14 +33,6 @@ print('chicago_crime_data hat',chicago_crime_data.shape[1],'spalten und',chicago
 # %%
 chicago_crime_data.head()
 
-# %% [markdown]
-# ## Input Variable:
-# - Case Number
-# ## Output Variablen:
-# - Block test
-# - Primary Type
-# - Description
-
 # %%
 print('Fast alle Variablen sind Nominal skaliert')
 print('Die Variablen Arrest und Domestic sind Ordinal')
@@ -50,7 +42,7 @@ chicago_crime_data.info()
 
 # %% [markdown]
 # # Data Cleaning
-#  Die meisten Datensätze sind nicht vollständig. Die fehlenden Stellen können z.B. entweder fehlender Sorgfalt beim Füllen des Datensatzes von Menschen geschuldet sein, oder manche Daten sind einfach nicht verfügbar. 
+# Die meisten Datensätze sind nicht vollständig. Die fehlenden Felder können zum Beispiel entweder fehlender Sorgfalt beim Füllen des Datensatzes von Menschen geschuldet sein, oder manche Daten sind einfach nicht verfügbar. 
 #
 # Die Anzahl dieser fehlenden Datenstellen können wir mit isnull().sum() auslesen. Außerdem berechnen wir für ein besseres Verständnis die Prozentzahl von Daten, die fehlen:
 
@@ -101,14 +93,7 @@ print("Der Datensatz hat nach Ausschließung der häuslichen Verbrechen noch " +
 data_cleaned = crimes_public
 
 # %% [markdown]
-# ### Begrenzung auf ein Jahr
-# In manchen Auswertungen wollen wir nur ein bestimmtes Jahr beachten. Um das ressourcenintensive Erstellen eines Dataframes bei jeder Operation, bei der ein solches Array gebraucht wird, zu vermeiden, wollen wir ein neues Dataframe erstellen, welches nur die Werte der Verbrechen enthält, die im Jahr 2019 passiert sind
-
-# %%
-nur2019 = data_cleaned.loc[data_cleaned['Year'] == 2019]
-
-# %% [markdown]
-# ***Ende Data Cleaning kapitel***
+# # Ende Data Cleaning
 
 # %%
 pd.set_option('display.float_format', '{:.2f}'.format)
@@ -130,9 +115,9 @@ plt.show()
 # # Heatmap von Chicago
 
 # %% [markdown]
-# Große Städte verändern sich ständig. Stadtmittelpunkte, Touristenattraktionen und andere Orte von Menschenansammlungen verändern und verschieben sich, wenn neue Orte ausgebaut werden und alte Geschäfte/Viertelgeschlossen werden. Deswegen werden wir für die Heatmap nur die Verbrechen beachten, die seit Anfang 2015 geschehen sind. Das Jahr 2015 wurde gewählt, weil so in den vergangenen 7 11/12 Jahren genügend Daten angefallen sind und die Geodaten aber trotzdem aktuell genug sein sollten, um verlässliche Aussagen über die Sicherheit der Orte zu treffen.
+# Große Städte verändern sich ständig. Stadtmittelpunkte, Touristenattraktionen und andere Orte von Menschenansammlungen verändern und verschieben sich, wenn neue Orte ausgebaut werden und alte Geschäfte/Viertelgeschlossen werden. Deswegen werden wir für die Heatmap nur die Verbrechen beachten, die seit Anfang 2015 geschehen sind. Das Jahr 2015 wurde gewählt, weil so in den vergangenen 7 Jahren und 11 Monate genügend Daten angefallen sind und die Geodaten aber trotzdem aktuell genug sein sollten, um verlässliche Aussagen über die Sicherheit der Orte zu treffen. Außerdem sind die Daten so weniger stark beinflusst von den temporär veränderten Öffentlichkeitsaufhalten der Bevölkerungen durch die Covid 19 Pandemie und deren Lockdowns. 
 #
-# Wir erstellen also ein neues Dataframe, in dem nur die Verbrechen ab 2019 enthalten sind:
+# Wir erstellen also ein neues Dataframe, in dem nur die Verbrechen ab 2015 enthalten sind:
 
 # %%
 crimes_nach_2015 = data_cleaned.loc[data_cleaned['Year'] >= 2015]
@@ -165,13 +150,13 @@ karte_Chicago_Heatmap
 # Aus der Verteilung der Verbrechen in Chicago kann man den Schluss ziehen, das es in dichter besiedelten Gebieten mehr Verbrechen gibt. Um dies zu bestätigen, können wir mit der Folium Library auch einen Vergleich der Heatmap mit einer leeren Satellitenkarte herstellen.
 #
 # ### Vergleich mit Satellitenbildern
-# Dafür erstellern wir zuerst ein neues Folium Kartenobjekt "vergleich":
+# Dafür erstellern wir zuerst ein neues Folium DualMap Kartenobjekt "vergleich":
 
 # %%
 vergleich = fl.plugins.DualMap(location=(41.849429, -87.597334), tiles=None, zoom_start=11, control_scale=True,)
 
 # %% [markdown]
-# Daraufhin erstellen wir die zwei untergeordneten Kartenobjekte m1 und m2, die zum Dualmap Kartenobjekt "vergleich" gehören. Als Kartenquelle fügen wir die Api der Esri World Imagery Karte ein, die frei verfügbar ist:
+# Daraufhin erstellen wir die zwei untergeordneten Kartenobjekte m1 und m2, die zum Dualmap Kartenobjekt "vergleich" gehören. Als Kartenquelle fügen wir für beide Karten die Api der Satellitenkarte "Esri World Imagery" ein, die frei verfügbar ist:
 #
 # https://www.arcgis.com/home/item.html?id=10df2279f9684e4a9f6a7f08febac2a9
 
@@ -230,7 +215,6 @@ fl.Marker(
 #Karte ausgeben und speichern
 marker_Chicago_Heatmap.save('Karten/Chicago_Heatmap_Marker.html')
 marker_Chicago_Heatmap
-
 
 # %% [markdown]
 # Durch einen klick mit dem Mauszeiger kann auch direkt auf der Karte der Name des Hotels und der entsprechende Google Maps link eingesehen werden. Da aber nicht jeder die Karte interaktiv zur Hand haben wird, sind hier auch noch einmal die Informationen sowie die Sicherheitseinschätzung des Gebiets dem Datensatz zufolge aufgelistet:
@@ -310,7 +294,7 @@ if (input_verwenden == True):
 # Um Konflikte zu vermeiden, wird in diesem Teil zunächst der Datensatz nochmal in ein neues Data-Frame geladen.
 
 # %%
-chicago_crime_data_vergleich_frueher_heute = pd.read_csv('crimes-chicago-dataset.csv')
+chicago_crime_data_vergleich_frueher_heute = chicago_crime_data
 
 # %% [markdown]
 # Und die einzige Spalten die behalten werden sind die Spalte Date und die Spalte Primary Type.
@@ -341,8 +325,8 @@ chicago_crime_data_vergleich_frueher_heute = chicago_crime_data_vergleich_fruehe
 # %% [markdown]
 # # Sichere Tageszeiten?.
 
-# %%
-TODO: explain myself lmao
+# %% [markdown]
+# TODO: explain myself lmao
 
 # %%
 chicago_crime_data.Date = pd.to_datetime(chicago_crime_data.Date)
@@ -367,7 +351,6 @@ sns.histplot(day_of_month_chicago_crime_data, kde=False, bins=24)
 #
 
 # %%
-
 def get_season(date):
     month = date.month
     if 3 <= month <= 5:
@@ -393,24 +376,25 @@ plt.show()
 # ## Klassifizierung der Verbrechen.
 
 # %% [markdown]
-# Verbrechen sind vielfältig und reichen von vergleichsweise harmlosen Vorkommnissen bis hin zu schwerwiegenden Delikten. In diesem Teil der Analyse werden Verbrechen anhand verschiedener Kriterien wie Gewaltanwendung, potenzielle Schädlichkeit für Opfer und die Schwere der Gesetzesverletzung klassifiziert. Vorfälle, die physische oder emotionale Bedrohungen, schwerwiegende Schäden oder schwerwiegende Gesetzesverstöße aufweisen, werden als schwerwiegend eingestuft. Vorfälle, die geringere Gefahren oder weniger erhebliche Gesetzesübertretungen darstellen, werden als weniger schwerwiegend betrachtet.
-
-# %% [markdown]
-# Zunächst werden die einzigartige Werte für 'Primary Type' abgerufen, um diese danach zu klassifizieren.
+# In unserem Datensatz sowie im echten Leben gibt es viele verschiedene Verbrechenskategorien. Diese variieren von vergleichsweise harmlosen Gesetzesverstößen wie Taschendiebstahl bis hin zu schweren Verbrechen wie Mord. Nicht alle Verbrechen betreffen uns aber als Urlauber in Chicago. 'LIQUOR LAW VIOLATION', d.H. ein Spirituosen Gesetzes Verstoß betrifft und als Urlauber nicht, obwohl es durchaus für die  Stadt ein größeres Problem darstellen könnte. Deshalb teilen wir die vielen verschiedenen Verbrechensarten in die zwei Kategorien schwerwiegend_Urlaub und belanglos_Urlaub ein. Besonders schwerwiegende Verbrechen, wie zum Beispiel solche, die schwere Sach-, Personen- oder psyschiche Schäden verursachen werden und von welchen wir als Urlauber ebenfalls potenziell betroffen sein könnten, werden als als schwerwiegend eingestuft, Verbrechen die eher geringfügige Schäden verursachen werden hingegen als weniger schwerwiegend eingestuft.
+#
+# Dazu rufen wir zunächst alle einzigartigen Verbrechensarten in der Kategorie 'Primary Type' auf und geben die daraus resultierende Liste mit print() aus:
 
 # %%
 unique_types = chicago_crime_data_vergleich_frueher_heute['Primary Type'].unique()
 print(unique_types)
 
 # %% [markdown]
-# Jetzt werden die Folgende verbrechen als Schwerwiegend eingestuft: 'THEFT', 'ASSAULT', 'WEAPONS VIOLATION','SEX OFFENSE','CRIM SEXUAL ASSAULT','MOTOR VEHICLE THEFT','CRIMINAL TRESPASS','ROBBERY','PUBLIC PEACE VIOLATION','CRIMINAL SEXUAL ASSAULT','HOMICIDE', 'KIDNAPPING' und 'HUMAN TRAFFICKING'.
+# Nach einiger Überlegung und Evaluation stufen wir nun die folgenden Verbrechen als schwerwiegend für Urlauber ein: 'THEFT', 'ASSAULT', 'WEAPONS VIOLATION','SEX OFFENSE','CRIM SEXUAL ASSAULT','MOTOR VEHICLE THEFT','CRIMINAL TRESPASS','ROBBERY','PUBLIC PEACE VIOLATION','CRIMINAL SEXUAL ASSAULT','HOMICIDE', 'KIDNAPPING' und 'HUMAN TRAFFICKING'. Diese werden in der Liste schwerwiegend_Urlaub als Zeichenkette gespeichert:
 
 # %%
 schwerwiegende_verbrechen = ['THEFT', 'ASSAULT', 'WEAPONS VIOLATION','SEX OFFENSE','CRIM SEXUAL ASSAULT','MOTOR VEHICLE THEFT','CRIMINAL TRESPASS','ROBBERY','PUBLIC PEACE VIOLATION','CRIMINAL SEXUAL ASSAULT','HOMICIDE', 'KIDNAPPING','HUMAN TRAFFICKING']
 
 
 # %% [markdown]
-# Jetzt werden die Verbrechen in das ganze Datensatz bewertet und als "Schwerwiegend" oder "Nicht Schwerwiegend" entsprechend eigenstuf.
+# Jetzt werden die Verbrechen im gesamten Datensatz bewertet und als "Schwerwiegend" oder "Nicht Schwerwiegend" entsprechend eingestuft. 
+#
+# Dazu erstellen wir die Methode "klassifizieren". Diese nimmt als Parameter einen 'crime_type String. Wenn dieser Parameter in der Liste schwerwiegende_verbrechen enthalten ist, gibt die Methode 'Schwerwiegend' aus, wenn nicht wird 'Nicht Schwerwiegend' ausgegeben: 
 
 # %%
 def klassifizieren(crime_type):
@@ -419,6 +403,11 @@ def klassifizieren(crime_type):
     else:
         return 'Nicht Schwerwiegend'
 
+
+# %% [markdown]
+# Nun wird in der neuen Spalte mit dem Namen 'Klassifizierung' für jedes Reihe gespeichert, ob das Verbrechen der Reihe schwerwiegend oder nicht schwerwiegend ist TODO
+
+# %%
 chicago_crime_data_vergleich_frueher_heute['Schwere Klassifizierung'] = chicago_crime_data_vergleich_frueher_heute['Primary Type'].apply(klassifizieren)
 
 # %% [markdown]
@@ -503,3 +492,7 @@ plt.show()
 # Nach der durchgeführten Analyse ist es schlusszufolgern, dass die Anzahl der gemeldeten Straftaten seit 2001 stark gesunken ist, was eine positive Entwicklung nachweist.
 # Nicht desto trotz ist die Anzahl der gemeldeten Diebstahlfälle im Jahr 2022 im Vergleich zum Jahr 2021 stark gewachsen, deswegen ist es ratsam, in einem Trip nach Chicago dies mitzurechnen und wertvolle Gegenstände nicht mit sich mitnehmen.
 # Aber es ist fear als Schlussfolgerung zu sagen, dass Chicago heute viel sicherer ist im Vergleich zu früheren Jahren.
+
+# %%
+
+# %%
