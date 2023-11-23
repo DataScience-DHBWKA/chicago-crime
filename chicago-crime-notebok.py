@@ -13,6 +13,9 @@
 #     name: python3
 # ---
 
+# %% [markdown]
+# # Imports
+
 # %%
 import numpy as np
 import pandas as pd
@@ -24,6 +27,12 @@ from datetime import datetime
 from folium.plugins import HeatMap
 from folium.plugins import DualMap
 
+# %% [markdown]
+# # Einleitung
+
+# %% [markdown]
+# Als erstes lesen wir hier den Datensatz ein, und schauen uns ein paar Eigenschaften an, die für uns interressant sind.
+
 # %%
 chicago_crime_data = pd.read_csv('crimes-chicago-dataset.csv')
 
@@ -33,12 +42,24 @@ print('chicago_crime_data hat',chicago_crime_data.shape[1],'spalten und',chicago
 # %%
 chicago_crime_data.head()
 
+<<<<<<< HEAD
+
 # %%
 print('Fast alle Variablen sind Nominal skaliert')
 print('Die Variablen Arrest und Domestic sind Ordinal')
 
+=======
+>>>>>>> 18fe268383f27f135a07466375eb05cf59abe50a
+
 # %%
 chicago_crime_data.info()
+
+# %% [markdown]
+# Hieraus können wir folgende, für uns weitergehend wichtige Erkenntnisse ziehen:
+# 1. Wir wissen unser Code hat 7931583 Einträge mit 22 Datenspalten.
+# 2. Wir haben eine Vorstellung davon, welche Daten wir vorliegen haben, um unser weiteres Vorgehen zu planen.
+# 3. Wir wissen wie unsere Merkmalsausprägungen skaliert sind (die meisten ordinal, aber z.B. die Spalte 
+# 3. Wir können einordnen in welchen Datentypen die jeweiligen Daten gespeichert sind, und wissen wie wir weiter mit diesen vorgehen müssen.
 
 # %% [markdown]
 # # Data Cleaning
@@ -324,22 +345,32 @@ chicago_crime_data_vergleich_frueher_heute = chicago_crime_data_vergleich_fruehe
 
 # %% [markdown]
 # # Sichere Tageszeiten?.
+#
+# <<<<<<< HEAD
 
 # %% [markdown]
 # TODO: explain myself lmao
+# =======
 
 # %%
-chicago_crime_data.Date = pd.to_datetime(chicago_crime_data.Date)
-day_of_month_chicago_crime_data = chicago_crime_data['Date'].dt.hour
-sns.histplot(day_of_month_chicago_crime_data, kde=False, bins=24)
+Hier stellen wir die jeweilige Tageszeiten, zu denen Verbrechen geschehen sind, als Histogramm dar.
+Wir müssen zuerst die Date Spalte von Objects zu Datetimes konvetieren, um dann mit diesen einen Plot erstellen zu können, indem wir aus der Datetime direkt die Stunde rausziehen.
+>>>>>>> 18fe268383f27f135a07466375eb05cf59abe50a
+
+# %%
+data_cleaned.Date = pd.to_datetime(data_cleaned.Date)
+day_of_month_chicago_crime_data = data_cleaned['Date'].dt.hour
+fig = sns.histplot(day_of_month_chicago_crime_data, kde=False, bins=24)
+fig.set(xlabel='Hour', ylabel='Amount of commited Crimes')
 
 
 # %% [markdown]
-# Im Histogramm können wir die Tageszeiten der Verbrechen sehen.
-# Man kann erkennen, dass nachts weniger Verbrechen geschehen als tagsüber.
-# Aufgrunddessen, dass jeweils 0 und 12 Uhr Ausreißer sind, vermuten wir, dass bei Verbrechen, bei denen die Zeit ungenau war, diese auf 0 oder 12 Uhr ab/aufgerundet werden.
-# Mit dieser Vermutung entsteht ein plausibler Graph. Man sagt zwar, dass es nachts gefährlicher ist als tagsüber normalerweise, aber ausgehend davon,
-# dass nachts weniger Menschen wach sind, gibt es auch weniger Menschen die Verbrechen begehen können.
+# Im Histogramm können wir nun die Tageszeiten der begangenen Verbrechen sehen.
+# Man sieht deutlich, dass nachts(5 Uhr) am wenigsten Verbrechen geschehen, und diese fast stetig bis 18 Uhr zunehmen, und diese Anzahl sich wieder bis 5 Uhr verringert
+# Ausnahme davon sind 0 und 12 Uhr, unsere Vermutung hier ist, dass Verbrechen, bei denen nur eine ungefähre Uhrzeit zur Verfügung stand, entweder auf 0 oder auf 12 Uhr ab/aufgerundet wurden.
+#
+# Auf ersten Blick würde man also denken, dass die sicherste Tageszeit für einen Trip die Nacht wäre, aber da nachts normalerweise weniger Menschen aktiv sind, ist diese Statistik etwas trügerisch.
+# Unser Fazit hier ist, dass wir aus diesem Histogramm leider keine erkenntliche Einsicht über eine empfehlenswerte Tageszeit zum rausgehen gewinnen können.
 
 # %% [markdown]
 # # Sichere Jahreszeiten?.
@@ -371,6 +402,10 @@ plt.title('Balkendiagramm nach Jahreszeiten')
 plt.xlabel('Jahreszeit')
 plt.ylabel('Summe der Werte')
 plt.show()
+
+# %%
+Man kann deutlich sehen, dass die Anzahl der Verbrechen im Vergleich zu den Anderen Jahreszeiten im Winter stark sinkt, während im Sommer mehr Verbrechen geschehen.
+Für einen Trip nach Chicago würde sich also definitv der Winter anbieten!
 
 # %% [markdown]
 # ## Klassifizierung der Verbrechen.
@@ -492,7 +527,3 @@ plt.show()
 # Nach der durchgeführten Analyse ist es schlusszufolgern, dass die Anzahl der gemeldeten Straftaten seit 2001 stark gesunken ist, was eine positive Entwicklung nachweist.
 # Nicht desto trotz ist die Anzahl der gemeldeten Diebstahlfälle im Jahr 2022 im Vergleich zum Jahr 2021 stark gewachsen, deswegen ist es ratsam, in einem Trip nach Chicago dies mitzurechnen und wertvolle Gegenstände nicht mit sich mitnehmen.
 # Aber es ist fear als Schlussfolgerung zu sagen, dass Chicago heute viel sicherer ist im Vergleich zu früheren Jahren.
-
-# %%
-
-# %%
