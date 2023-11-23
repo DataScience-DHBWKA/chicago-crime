@@ -42,15 +42,6 @@ print('chicago_crime_data hat',chicago_crime_data.shape[1],'spalten und',chicago
 # %%
 chicago_crime_data.head()
 
-<<<<<<< HEAD
-
-# %%
-print('Fast alle Variablen sind Nominal skaliert')
-print('Die Variablen Arrest und Domestic sind Ordinal')
-
-=======
->>>>>>> 18fe268383f27f135a07466375eb05cf59abe50a
-
 # %%
 chicago_crime_data.info()
 
@@ -345,17 +336,10 @@ chicago_crime_data_vergleich_frueher_heute = chicago_crime_data_vergleich_fruehe
 
 # %% [markdown]
 # # Sichere Tageszeiten?.
-#
-# <<<<<<< HEAD
-
-# %% [markdown]
-# TODO: explain myself lmao
-# =======
 
 # %%
 Hier stellen wir die jeweilige Tageszeiten, zu denen Verbrechen geschehen sind, als Histogramm dar.
 Wir müssen zuerst die Date Spalte von Objects zu Datetimes konvetieren, um dann mit diesen einen Plot erstellen zu können, indem wir aus der Datetime direkt die Stunde rausziehen.
->>>>>>> 18fe268383f27f135a07466375eb05cf59abe50a
 
 # %%
 data_cleaned.Date = pd.to_datetime(data_cleaned.Date)
@@ -527,3 +511,5 @@ plt.show()
 # Nach der durchgeführten Analyse ist es schlusszufolgern, dass die Anzahl der gemeldeten Straftaten seit 2001 stark gesunken ist, was eine positive Entwicklung nachweist.
 # Nicht desto trotz ist die Anzahl der gemeldeten Diebstahlfälle im Jahr 2022 im Vergleich zum Jahr 2021 stark gewachsen, deswegen ist es ratsam, in einem Trip nach Chicago dies mitzurechnen und wertvolle Gegenstände nicht mit sich mitnehmen.
 # Aber es ist fear als Schlussfolgerung zu sagen, dass Chicago heute viel sicherer ist im Vergleich zu früheren Jahren.
+
+# %%
