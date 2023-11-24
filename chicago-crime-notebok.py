@@ -49,8 +49,8 @@ chicago_crime_data.info()
 # Hieraus können wir folgende, für uns weitergehend wichtige Erkenntnisse ziehen:
 # 1. Wir wissen unser Code hat 7931583 Einträge mit 22 Datenspalten.
 # 2. Wir haben eine Vorstellung davon, welche Daten wir vorliegen haben, um unser weiteres Vorgehen zu planen.
-# 3. Wir wissen wie unsere Merkmalsausprägungen skaliert sind (die meisten ordinal, aber z.B. die Spalte 
-# 3. Wir können einordnen in welchen Datentypen die jeweiligen Daten gespeichert sind, und wissen wie wir weiter mit diesen vorgehen müssen.
+# 3. Wir wissen wie unsere Merkmalsausprägungen skaliert sind (die meisten nominal, aber z.B. die Spalte "Description" ist ordinal skaliert.
+# 4. Wir können einordnen in welchen Datentypen die jeweiligen Daten gespeichert sind, und wissen wie wir weiter mit diesen vorgehen müssen.
 
 # %% [markdown]
 # # Data Cleaning
@@ -297,49 +297,12 @@ if (input_verwenden == True):
     display(karte_Chicago_Inputmarker)
 
 # %% [markdown]
-# # Vergleich früher/heute.
 
-# %% [markdown]
-# ## Vorbereitung der Daten.
-
-# %% [markdown]
-# Um Konflikte zu vermeiden, wird in diesem Teil zunächst der Datensatz nochmal in ein neues Data-Frame geladen.
-
-# %%
-chicago_crime_data_vergleich_frueher_heute = chicago_crime_data
-
-# %% [markdown]
-# Und die einzige Spalten die behalten werden sind die Spalte Date und die Spalte Primary Type.
-
-# %%
-spalten_zu_behalten = ['Date', 'Primary Type']
-chicago_crime_data_vergleich_frueher_heute = chicago_crime_data_vergleich_frueher_heute[spalten_zu_behalten]
-
-# %% [markdown]
-# Damit die Analyse einfacher wird, werden in die Spalte Date nur die Jahre behalten.
-# Dafür wird zuerst der Datentyp für die Spalte 'Date', was aktuell ein objekt ist, auf 'Date' bzw. Datum mit pandas konvertiert.
-
-# %%
-chicago_crime_data_vergleich_frueher_heute['Date'] = pd.to_datetime(chicago_crime_data_vergleich_frueher_heute['Date'].copy())
-
-# %% [markdown]
-# Die Jahre werden jetzt in eine Neue Spalte 'Year' gespeichert.
-
-# %%
-chicago_crime_data_vergleich_frueher_heute['Year'] = chicago_crime_data_vergleich_frueher_heute['Date'].dt.year
-
-# %% [markdown]
-# Da die Spalte 'Year' jetzt nicht mehr gebraucht wird, wird die jetzt mit die drop Funktion gelöscht.
-
-# %%
-chicago_crime_data_vergleich_frueher_heute = chicago_crime_data_vergleich_frueher_heute.drop('Date', axis=1)
-
-# %% [markdown]
 # # Sichere Tageszeiten?.
 
-# %%
-Hier stellen wir die jeweilige Tageszeiten, zu denen Verbrechen geschehen sind, als Histogramm dar.
-Wir müssen zuerst die Date Spalte von Objects zu Datetimes konvetieren, um dann mit diesen einen Plot erstellen zu können, indem wir aus der Datetime direkt die Stunde rausziehen.
+# %% [markdown]
+# Hier stellen wir die jeweilige Tageszeiten, zu denen Verbrechen geschehen sind, als Histogramm dar.
+# Wir müssen zuerst die Date Spalte von Objects zu Datetimes konvetieren, um dann mit diesen einen Plot erstellen zu können, indem wir aus der Datetime direkt die Stunde rausziehen.
 
 # %%
 data_cleaned.Date = pd.to_datetime(data_cleaned.Date)
@@ -377,9 +340,9 @@ def get_season(date):
     else:
         return "Winter"
 
-chicago_crime_data['Jahreszeit'] = chicago_crime_data['Date'].apply(get_season)
+data_cleaned['Jahreszeit'] = data_cleaned['Date'].apply(get_season)
 
-chicago_crime_data_grouped = chicago_crime_data.groupby('Jahreszeit')['Case Number'].size()
+chicago_crime_data_grouped = data_cleaned.groupby('Jahreszeit')['Case Number'].size()
 
 plt.bar(chicago_crime_data_grouped.index, chicago_crime_data_grouped.values, color=['green', 'orange', 'red', 'blue'])
 plt.title('Balkendiagramm nach Jahreszeiten')
@@ -387,9 +350,9 @@ plt.xlabel('Jahreszeit')
 plt.ylabel('Summe der Werte')
 plt.show()
 
-# %%
-Man kann deutlich sehen, dass die Anzahl der Verbrechen im Vergleich zu den Anderen Jahreszeiten im Winter stark sinkt, während im Sommer mehr Verbrechen geschehen.
-Für einen Trip nach Chicago würde sich also definitv der Winter anbieten!
+# %% [markdown]
+# Man kann deutlich sehen, dass die Anzahl der Verbrechen im Vergleich zu den Anderen Jahreszeiten im Winter stark sinkt, während im Sommer mehr Verbrechen geschehen.
+# Für einen Trip nach Chicago würde sich also definitv der Winter anbieten!
 
 # %% [markdown]
 # ## Klassifizierung der Verbrechen.
@@ -400,7 +363,7 @@ Für einen Trip nach Chicago würde sich also definitv der Winter anbieten!
 # Dazu rufen wir zunächst alle einzigartigen Verbrechensarten in der Kategorie 'Primary Type' auf und geben die daraus resultierende Liste mit print() aus:
 
 # %%
-unique_types = chicago_crime_data_vergleich_frueher_heute['Primary Type'].unique()
+unique_types = data_cleaned['Primary Type'].unique()
 print(unique_types)
 
 # %% [markdown]
@@ -423,11 +386,8 @@ def klassifizieren(crime_type):
         return 'Nicht Schwerwiegend'
 
 
-# %% [markdown]
-# Nun wird in der neuen Spalte mit dem Namen 'Klassifizierung' für jedes Reihe gespeichert, ob das Verbrechen der Reihe schwerwiegend oder nicht schwerwiegend ist TODO
+data_cleaned['Schwere Klassifizierung'] = data_cleaned['Primary Type'].apply(klassifizieren)
 
-# %%
-chicago_crime_data_vergleich_frueher_heute['Schwere Klassifizierung'] = chicago_crime_data_vergleich_frueher_heute['Primary Type'].apply(klassifizieren)
 
 # %% [markdown]
 # ## Gruppierung nach Jahren.
@@ -436,7 +396,7 @@ chicago_crime_data_vergleich_frueher_heute['Schwere Klassifizierung'] = chicago_
 # Um die Analyse durchführen zu können, werden jetzt die Daten nach Jahren gruppiert, und die Anzahl schwerwiegende und nicht schwerwiegende Verbrechen für jedes Jahr summiert.
 
 # %%
-gruppe = chicago_crime_data_vergleich_frueher_heute.groupby(['Year', 'Schwere Klassifizierung']).size().unstack()
+gruppe = data_cleaned.groupby(['Year', 'Schwere Klassifizierung']).size().unstack()
 gruppe = gruppe.fillna(0)
 print(gruppe)
 
@@ -470,13 +430,13 @@ plt.show()
 # Dafür werden die Daten aus den Jahren 2021 und 2022 extrahiert
 
 # %%
-schwere_verbrechen_2021 = chicago_crime_data_vergleich_frueher_heute[
-    (chicago_crime_data_vergleich_frueher_heute['Schwere Klassifizierung'] == 'Schwerwiegend') &
-    (chicago_crime_data_vergleich_frueher_heute['Year'] == 2021)
+schwere_verbrechen_2021 = data_cleaned[
+    (data_cleaned['Schwere Klassifizierung'] == 'Schwerwiegend') &
+    (data_cleaned['Year'] == 2021)
 ]
-schwere_verbrechen_2022 = chicago_crime_data_vergleich_frueher_heute[
-    (chicago_crime_data_vergleich_frueher_heute['Schwere Klassifizierung'] == 'Schwerwiegend') &
-    (chicago_crime_data_vergleich_frueher_heute['Year'] == 2022)
+schwere_verbrechen_2022 = data_cleaned[
+    (data_cleaned['Schwere Klassifizierung'] == 'Schwerwiegend') &
+    (data_cleaned['Year'] == 2022)
 ]
 
 # %% [markdown]
