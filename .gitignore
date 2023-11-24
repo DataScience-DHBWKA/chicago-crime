@@ -164,3 +164,10 @@ cython_debug/
 folium_map.html
 folium_map.html
 *.html
+*.sqlite
+.vs/ProjectSettings.json
+.vs/chicago-crime/FileContentIndex/4fd120d6-8369-4344-a749-5a9ca159c98d.vsidx
+.vs/chicago-crime/FileContentIndex/1834dcab-d4f1-42b4-8df7-52efddc186f4.vsidx
+.vs/chicago-crime/FileContentIndex/a50111bd-5aba-4df2-af1c-1644310b08dc.vsidx
+.vs/chicago-crime/FileContentIndex/4397a889-18dc-42c6-a32c-26f21595dd6f.vsidx
+.vs/chicago-crime/v17/.wsuo
