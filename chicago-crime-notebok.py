@@ -132,7 +132,8 @@ plt.show()
 # Wir erstellen also ein neues Dataframe, in dem nur die Verbrechen ab 2015 enthalten sind:
 
 # %%
-crimes_nach_2015 = data_cleaned.loc[data_cleaned['Year'] >= 2015]
+#crimes_nach_2015 = data_cleaned.loc[data_cleaned['Year'] >= 2015]
+crimes_nach_2015 = data_cleaned.loc[data_cleaned['Year'] == 2023]
 
 # %% [markdown]
 # ### Kartenerstellung
@@ -152,7 +153,7 @@ karte_Chicago
 # %%
 lat_long = crimes_nach_2015[['Latitude', 'Longitude']].values.tolist()
 karte_Chicago_Heatmap = karte_Chicago #Referenzkopie der leeren Karte
-HeatMap(lat_long, 0.3).add_to(karte_Chicago_Heatmap)
+HeatMap(lat_long, radius=(23), blur=(25),).add_to(karte_Chicago_Heatmap)
 
 #Karte ausgeben und speichern
 karte_Chicago_Heatmap.save('Karten/Chicago_Heatmap.html')
@@ -297,7 +298,7 @@ if (input_verwenden == True):
     display(karte_Chicago_Inputmarker)
 
 # %% [markdown]
-
+#
 # # Sichere Tageszeiten?.
 
 # %% [markdown]
@@ -387,7 +388,6 @@ def klassifizieren(crime_type):
 
 
 data_cleaned['Schwere Klassifizierung'] = data_cleaned['Primary Type'].apply(klassifizieren)
-
 
 # %% [markdown]
 # ## Gruppierung nach Jahren.
