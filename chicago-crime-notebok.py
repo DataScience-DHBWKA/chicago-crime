@@ -127,12 +127,12 @@ plt.show()
 # # Heatmap von Chicago
 
 # %% [markdown]
-# Große Städte verändern sich ständig. Stadtmittelpunkte, Touristenattraktionen und andere Orte von Menschenansammlungen verändern und verschieben sich, wenn neue Orte ausgebaut werden und alte Geschäfte/Viertelgeschlossen werden. Deswegen werden wir für die Heatmap nur die Verbrechen beachten, die seit Anfang 2015 geschehen sind. Das Jahr 2015 wurde gewählt, weil so in den vergangenen 7 Jahren und 11 Monate genügend Daten angefallen sind und die Geodaten aber trotzdem aktuell genug sein sollten, um verlässliche Aussagen über die Sicherheit der Orte zu treffen. Außerdem sind die Daten so weniger stark beinflusst von den temporär veränderten Öffentlichkeitsaufhalten der Bevölkerungen durch die Covid 19 Pandemie und deren Lockdowns. 
+# Große Städte verändern sich ständig. Stadtmittelpunkte, Touristenattraktionen und andere Orte von Menschenansammlungen verändern und verschieben sich, wenn neue Orte ausgebaut werden und alte Geschäfte/Viertel geschlossen werden. Deswegen werden wir für die Heatmap nur die Verbrechen beachten, die dieses Jahr geschehen sind. Dieser Zeitraum wurde so gewählt, weil so in den vergangenen 11 Monaten genügend Daten angefallen sind und die Geodaten aber trotzdem aktuell genug sein sollten, um verlässliche Aussagen über die Sicherheit der Orte zu treffen. Außerdem sind die Daten so weniger stark beinflusst von den temporär veränderten Öffentlichkeitsaufhalten der Bevölkerungen durch die Covid 19 Pandemie und deren Lockdowns, da im Jahr 2023 generell die meisten Beschränkungen aufgehoben wurden. 
 #
-# Wir erstellen also ein neues Dataframe, in dem nur die Verbrechen ab 2015 enthalten sind:
+# Wir erstellen also ein neues Dataframe, in dem nur die Verbrechen im Jahr 2019 enthalten sind:
 
 # %%
-crimes_nach_2015 = data_cleaned.loc[data_cleaned['Year'] >= 2015]
+crimes_2023 = data_cleaned.loc[data_cleaned['Year'] == 2023]
 
 # %% [markdown]
 # ### Kartenerstellung
@@ -147,12 +147,12 @@ karte_Chicago.save('Karten/Chicago_Karte.html')
 karte_Chicago
 
 # %% [markdown]
-# Nun werden die Latitude und Longitude Koordinatenpaare jedes im Datenframe "data_cleaned" vorkommenden Verbrechen (s.O. für eine Liste der darin ausgeschlossenen Verbrechen) im Array lats_longs gespeichert. Daraus können wir dann eine Heatmap erstellen, in der alle in der Öffentlichkeit nach dem Jahr 2015 passierten Verbrechen gezeigt werden. Durch die Zoom Funktion besteht auch die Möglichkweit, mit simplen Mausbewegungen einzelne Blöcke und Straßen mit den dort geschehenen Verbrechen anzusehen.
+# Nun werden die Latitude und Longitude Koordinatenpaare jedes im Datenframe "data_cleaned" vorkommenden Verbrechen (siehe oben für eine Liste der darin ausgeschlossenen Verbrechen) im Array lats_long gespeichert. Daraus können wir dann eine Heatmap erstellen, in der alle in der Öffentlichkeit im Jahr 2023 passierten Verbrechen gezeigt werden. Durch die Zoom Funktion besteht auch die Möglichkeit, mit simplen Mausbewegungen einzelne Häuserblöcke und Straßen mit den dort geschehenen Verbrechen anzusehen
 
 # %%
-lat_long = crimes_nach_2015[['Latitude', 'Longitude']].values.tolist()
+lat_long = crimes_2023[['Latitude', 'Longitude']].values.tolist()
 karte_Chicago_Heatmap = karte_Chicago #Referenzkopie der leeren Karte
-HeatMap(lat_long, 0.3).add_to(karte_Chicago_Heatmap)
+HeatMap(lat_long, radius=(30), blur=(30),).add_to(karte_Chicago_Heatmap)
 
 #Karte ausgeben und speichern
 karte_Chicago_Heatmap.save('Karten/Chicago_Heatmap.html')
@@ -188,7 +188,7 @@ fl.TileLayer(
 # Nun fügen wir wie oben die im Array "lats_longs" gespeicherten Koordinaten der Verbrechen als Heatmap zur "m1" Karte hinzu und zeigen die neue "vergleich" Karte danach an:
 
 # %%
-HeatMap(lat_long, 0.3).add_to(vergleich.m1)
+HeatMap(lat_long, radius=(30), blur=(30)).add_to(vergleich.m1)
 #Steuerungsobjekte hinzufügen
 fl.LayerControl(collapsed=True, show=False).add_to(vergleich)
 
@@ -199,7 +199,8 @@ vergleich
 # %% [markdown]
 # Wir können also sehen, das in dichter besiedelten und bebauten Gebieten mehr Verbrechen geschehen. Somit kann man als allgemeine Handlungsempfehlung sagen, das man für einen möglichst sicheren Chicago Trip dicht besiedelte Orte eher meiden sollte.
 #
-# Um nun konkretere Reiseempfelungen treffen zu können, sollte man interesannte Reiseziele oder Hotels erst in dieser Karte aufsuchen, um deren Sicherheit zu bestimmen. Als Beispiel fügen wir einige Hotels mit deren Koordinaten in der Karte als Marker ein:
+# ### Anwendung auf bestimmte Reiseziele
+# Um nun konkretere Reiseempfelungen treffen zu können, sollte man interessante Reiseziele oder Hotels erst in dieser Karte aufsuchen, um deren Sicherheit zu bestimmen. Als Beispiel fügen wir einige Hotels mit deren Koordinaten in der Karte als Marker ein:
 
 # %%
 #Refernenzkopie der Karte auf ein neues Kartenobjekt, Zentrieren auf die Koordinaten von Hotel 2
@@ -247,12 +248,15 @@ marker_Chicago_Heatmap
 # Einschätzung: Dieses Hotel dagegen ist im Vergleich zum Rest von Chicago in einem sichereren Berreich, und ist deshalb dem Datensatz zufolge zu empfehlen
 #
 # ### Anwendung auf andere Hotels/Reiseziele
-# Die Schritte sind somit:  
-# 1: Ein Hotel auf einer Karte finden  
+# #### Manuelle Verwendung der Karte
+# Um ein anderes Hotel einschätzen zu können, müssen folgende Schritte befolgt werden:  
+# 1: Ein Hotel auf einem Kartedienst finden (z.B. Google Maps)  
 # 2: Das Hotel visuell auf der Heatmap aufsuchen und die Röte des Gebiets im Vergleich zum Rest der Heatmap begutachten  
 # 3: Je nach Tiefe der Röte entscheiden, ob der Ort den Sicherheitsanforderungen entspricht  
 #
-# Wenn dieses Jupyter Notebook interaktiv zur Hand liegt (d.h. der Datensatz ist ebenfalls verfügbar), können auch Koordinaten eingegben werden, damit diese dann automatisch auf der Heatmap als Marker angezeigt werden. Da ein Input in einem Jupyter Notebook aber zu Problemen bei der Eingabe führen kann, ist diese Funktion in diesem Code standardmäßig deaktiviert. Die Schritte zur Verwendung der Funktion lauten wie folgt:
+#
+# #### Abfragen basierte Anwendung der Heatmap
+# Wenn dieses Jupyter Notebook interaktiv zur Hand liegt (d.h. der Datensatz ist ebenfalls verfügbar), können auch Koordinaten eingegben werden, damit diese dann automatisch auf der Heatmap als Marker angezeigt werden. Da ein Input in einem Jupyter Notebook aber zu Problemen bei der Ausführung führen kann, ist diese Funktion in diesem Code standardmäßig deaktiviert. Die Schritte zur Verwendung der Funktion lauten wie folgt:
 #
 # 1: Die Variable input_verwenden auf True setzen ("False" mit "True" ersetzen) 
 # 2: Ein Hotel und deren Koordinaten finden, z.B. auf Google Maps ein Hotel rechtsklicken, mit einem Klick auf die dann angezeigten Koordinaten werden diese dann kopiert.  
@@ -262,8 +266,9 @@ marker_Chicago_Heatmap
 # 6: wenn gewünscht Name eingeben  
 # 7: wenn gewünscht Link eingeben  
 # 8: wenn gewünscht Kommando eingeben:  
-#         "Stop": Stoppt die Eingabeschleife und gibt das Kartenobjekt aus  
-#         Wenn nicht "Stop" eingegeben wird wird weiter nach Hotels abgefragt, bis Stop eingegeben wird. Dann wird eine Karte mit allen hinzugefügten Hotelmarkern angezeigt  
+# > "Stop": Stoppt die Eingabeschleife und gibt das Kartenobjekt aus  
+#
+# Wenn nicht "Stop" eingegeben wird wird weiter nach Hotels abgefragt, bis Stop eingegeben wird. Dann wird eine Karte mit allen hinzugefügten Hotelmarkern angezeigt  
 # 5: Enter drücken, die nächste Zelle ausführen und auf das Output warten  
 #
 #
@@ -297,15 +302,16 @@ if (input_verwenden == True):
     display(karte_Chicago_Inputmarker)
 
 # %% [markdown]
-
-# # Sichere Tageszeiten?.
+#
+# # Sichere Tageszeiten?
 
 # %% [markdown]
 # Hier stellen wir die jeweilige Tageszeiten, zu denen Verbrechen geschehen sind, als Histogramm dar.
 # Wir müssen zuerst die Date Spalte von Objects zu Datetimes konvetieren, um dann mit diesen einen Plot erstellen zu können, indem wir aus der Datetime direkt die Stunde rausziehen.
 
 # %%
-data_cleaned.Date = pd.to_datetime(data_cleaned.Date)
+#Umformatierung der Daten zu Datetimes
+data_cleaned['Date'] = pd.to_datetime(data_cleaned['Date'], format='%m/%d/%Y %I:%M:%S %p')
 day_of_month_chicago_crime_data = data_cleaned['Date'].dt.hour
 fig = sns.histplot(day_of_month_chicago_crime_data, kde=False, bins=24)
 fig.set(xlabel='Hour', ylabel='Amount of commited Crimes')
@@ -313,8 +319,7 @@ fig.set(xlabel='Hour', ylabel='Amount of commited Crimes')
 
 # %% [markdown]
 # Im Histogramm können wir nun die Tageszeiten der begangenen Verbrechen sehen.
-# Man sieht deutlich, dass nachts(5 Uhr) am wenigsten Verbrechen geschehen, und diese fast stetig bis 18 Uhr zunehmen, und diese Anzahl sich wieder bis 5 Uhr verringert
-# Ausnahme davon sind 0 und 12 Uhr, unsere Vermutung hier ist, dass Verbrechen, bei denen nur eine ungefähre Uhrzeit zur Verfügung stand, entweder auf 0 oder auf 12 Uhr ab/aufgerundet wurden.
+# Man sieht deutlich, dass nachts (5 Uhr) am wenigsten Verbrechen geschehen, und diese fast stetig bis 18 Uhr zunehmen, und diese Anzahl sich wieder bis 5 Uhr verringert. Ausnahme davon sind 0 und 12 Uhr, unsere Vermutung hier ist, dass Verbrechen, bei denen nur eine ungefähre Uhrzeit zur Verfügung stand, entweder auf 0 oder auf 12 Uhr ab/aufgerundet wurden.
 #
 # Auf ersten Blick würde man also denken, dass die sicherste Tageszeit für einen Trip die Nacht wäre, aber da nachts normalerweise weniger Menschen aktiv sind, ist diese Statistik etwas trügerisch.
 # Unser Fazit hier ist, dass wir aus diesem Histogramm leider keine erkenntliche Einsicht über eine empfehlenswerte Tageszeit zum rausgehen gewinnen können.
@@ -376,7 +381,7 @@ schwerwiegende_verbrechen = ['THEFT', 'ASSAULT', 'WEAPONS VIOLATION','SEX OFFENS
 # %% [markdown]
 # Jetzt werden die Verbrechen im gesamten Datensatz bewertet und als "Schwerwiegend" oder "Nicht Schwerwiegend" entsprechend eingestuft. 
 #
-# Dazu erstellen wir die Methode "klassifizieren". Diese nimmt als Parameter einen 'crime_type String. Wenn dieser Parameter in der Liste schwerwiegende_verbrechen enthalten ist, gibt die Methode 'Schwerwiegend' aus, wenn nicht wird 'Nicht Schwerwiegend' ausgegeben: 
+# Dazu erstellen wir die Methode "klassifizieren". Diese nimmt als Parameter einen 'crime_type' String. Wenn dieser Parameter in der Liste schwerwiegende_verbrechen enthalten ist, gibt die Methode 'Schwerwiegend' aus, wenn nicht wird 'Nicht Schwerwiegend' ausgegeben: 
 
 # %%
 def klassifizieren(crime_type):
@@ -387,7 +392,6 @@ def klassifizieren(crime_type):
 
 
 data_cleaned['Schwere Klassifizierung'] = data_cleaned['Primary Type'].apply(klassifizieren)
-
 
 # %% [markdown]
 # ## Gruppierung nach Jahren.
@@ -471,5 +475,3 @@ plt.show()
 # Nach der durchgeführten Analyse ist es schlusszufolgern, dass die Anzahl der gemeldeten Straftaten seit 2001 stark gesunken ist, was eine positive Entwicklung nachweist.
 # Nicht desto trotz ist die Anzahl der gemeldeten Diebstahlfälle im Jahr 2022 im Vergleich zum Jahr 2021 stark gewachsen, deswegen ist es ratsam, in einem Trip nach Chicago dies mitzurechnen und wertvolle Gegenstände nicht mit sich mitnehmen.
 # Aber es ist fear als Schlussfolgerung zu sagen, dass Chicago heute viel sicherer ist im Vergleich zu früheren Jahren.
-
-# %%
