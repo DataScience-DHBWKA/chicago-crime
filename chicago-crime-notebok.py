@@ -153,7 +153,7 @@ karte_Chicago
 # %%
 lat_long = crimes_nach_2015[['Latitude', 'Longitude']].values.tolist()
 karte_Chicago_Heatmap = karte_Chicago #Referenzkopie der leeren Karte
-HeatMap(lat_long, radius=(23), blur=(25),).add_to(karte_Chicago_Heatmap)
+HeatMap(lat_long, radius=(30), blur=(30),).add_to(karte_Chicago_Heatmap)
 
 #Karte ausgeben und speichern
 karte_Chicago_Heatmap.save('Karten/Chicago_Heatmap.html')
