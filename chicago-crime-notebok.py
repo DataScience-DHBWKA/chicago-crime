@@ -135,7 +135,7 @@ plt.show()
 crimes_2023 = data_cleaned.loc[data_cleaned['Year'] == 2023]
 
 # %% [markdown]
-# ### Kartenerstellung
+# ## Kartenerstellung
 # Wir beginnen, indem wir ein neues Kartenobjekt mit dem Namen "karte_Chicago" erstellen, dessen Mittelpunkt eine Koordinate in Chicago ist. Außerdem erstellen wir einen Ordner (falls dieser nicht bereits exisitert), in dem wir alle Karten speichern werden:
 
 # %%
@@ -152,7 +152,7 @@ karte_Chicago
 # %%
 lat_long = crimes_2023[['Latitude', 'Longitude']].values.tolist()
 karte_Chicago_Heatmap = karte_Chicago #Referenzkopie der leeren Karte
-HeatMap(lat_long, radius=(30), blur=(30),).add_to(karte_Chicago_Heatmap)
+HeatMap(lat_long, radius=(30), blur=(28),).add_to(karte_Chicago_Heatmap)
 
 #Karte ausgeben und speichern
 karte_Chicago_Heatmap.save('Karten/Chicago_Heatmap.html')
@@ -161,7 +161,7 @@ karte_Chicago_Heatmap
 # %% [markdown]
 # Aus der Verteilung der Verbrechen in Chicago kann man den Schluss ziehen, das es in dichter besiedelten Gebieten mehr Verbrechen gibt. Um dies zu bestätigen, können wir mit der Folium Library auch einen Vergleich der Heatmap mit einer leeren Satellitenkarte herstellen.
 #
-# ### Vergleich mit Satellitenbildern
+# ## Vergleich mit Satellitenbildern
 # Dafür erstellern wir zuerst ein neues Folium DualMap Kartenobjekt "vergleich":
 
 # %%
@@ -188,7 +188,7 @@ fl.TileLayer(
 # Nun fügen wir wie oben die im Array "lats_longs" gespeicherten Koordinaten der Verbrechen als Heatmap zur "m1" Karte hinzu und zeigen die neue "vergleich" Karte danach an:
 
 # %%
-HeatMap(lat_long, radius=(30), blur=(30)).add_to(vergleich.m1)
+HeatMap(lat_long, radius=(30), blur=(28)).add_to(vergleich.m1)
 #Steuerungsobjekte hinzufügen
 fl.LayerControl(collapsed=True, show=False).add_to(vergleich)
 
@@ -199,7 +199,7 @@ vergleich
 # %% [markdown]
 # Wir können also sehen, das in dichter besiedelten und bebauten Gebieten mehr Verbrechen geschehen. Somit kann man als allgemeine Handlungsempfehlung sagen, das man für einen möglichst sicheren Chicago Trip dicht besiedelte Orte eher meiden sollte.
 #
-# ### Anwendung auf bestimmte Reiseziele
+# ## Anwendung auf bestimmte Reiseziele
 # Um nun konkretere Reiseempfelungen treffen zu können, sollte man interessante Reiseziele oder Hotels erst in dieser Karte aufsuchen, um deren Sicherheit zu bestimmen. Als Beispiel fügen wir einige Hotels mit deren Koordinaten in der Karte als Marker ein:
 
 # %%
@@ -255,51 +255,8 @@ marker_Chicago_Heatmap
 # 3: Je nach Tiefe der Röte entscheiden, ob der Ort den Sicherheitsanforderungen entspricht  
 #
 #
-# #### Abfragen basierte Anwendung der Heatmap
-# Wenn dieses Jupyter Notebook interaktiv zur Hand liegt (d.h. der Datensatz ist ebenfalls verfügbar), können auch Koordinaten eingegben werden, damit diese dann automatisch auf der Heatmap als Marker angezeigt werden. Da ein Input in einem Jupyter Notebook aber zu Problemen bei der Ausführung führen kann, ist diese Funktion in diesem Code standardmäßig deaktiviert. Die Schritte zur Verwendung der Funktion lauten wie folgt:
-#
-# 1: Die Variable input_verwenden auf True setzen ("False" mit "True" ersetzen) 
-# 2: Ein Hotel und deren Koordinaten finden, z.B. auf Google Maps ein Hotel rechtsklicken, mit einem Klick auf die dann angezeigten Koordinaten werden diese dann kopiert.  
-# 3: Die Koordinaten müssen im Format "Latitude, Longitude" sein (von Google Maps kopierte Daten sind automatisch auf diese Weise formatiert). Ein Beispiel ist "41.88409255624877, -87.63483254654416"  
-# 4: Die untere Zelle ausführen  
-# 5: Koordinaten in das angefragte Inputfeld einkopieren  
-# 6: wenn gewünscht Name eingeben  
-# 7: wenn gewünscht Link eingeben  
-# 8: wenn gewünscht Kommando eingeben:  
-# > "Stop": Stoppt die Eingabeschleife und gibt das Kartenobjekt aus  
-#
-# Wenn nicht "Stop" eingegeben wird wird weiter nach Hotels abgefragt, bis Stop eingegeben wird. Dann wird eine Karte mit allen hinzugefügten Hotelmarkern angezeigt  
-# 5: Enter drücken, die nächste Zelle ausführen und auf das Output warten  
-#
-#
-
-# %%
-input_verwenden = False
-if (input_verwenden == True):
-    karte_Chicago_Inputmarker = karte_Chicago_Heatmap
-    input_command = " "
-    while (input_command != "Stop"):
-        #Eingaben abfragen und speichern
-        input_koordinaten = input("Koordinaten: ")
-        input_name = input("Name (kann auch leer sein): ")
-        input_link = input("Link (kann auch leer sein): ")
-        input_command = input("Command (kann auch leer sein, siehe oben): ")
-        
-        #Eingabe der Koordinaten aufteilen in zwei Float Variablen
-        input_latitude, input_longitude = map(float, input_koordinaten.split(', '))
-        
-        #Marker zur Karte hinzufügen
-        fl.Marker(
-        location=[input_latitude, input_longitude],
-        tooltip=input_name,
-        popup=input_link,
-        icon=fl.Icon(color="red", icon="bed", prefix='fa',),).add_to(karte_Chicago_Inputmarker);
-
-# %%
-#Karte ausgeben und speichern   
-if (input_verwenden == True):
-    karte_Chicago_Inputmarker.save('Karten/Chicago_Inputmarker_heatmap.html')
-    display(karte_Chicago_Inputmarker)
+# #### Abfragen basierte Verwendung der Karte
+# Wie im Kapitel Deployment beschrieben, ist auch eine interaktive Verwendung möglich.
 
 # %% [markdown]
 #
@@ -361,7 +318,7 @@ plt.show()
 
 # %% [markdown]
 # # Klassifizierung der Verbrechen
-# ### Klassifizierung
+# ## Klassifizierung
 
 # %% [markdown]
 # In unserem Datensatz sowie im echten Leben gibt es viele verschiedene Verbrechenskategorien. Diese variieren von vergleichsweise harmlosen Gesetzesverstößen wie Taschendiebstahl bis hin zu schweren Verbrechen wie Mord. Nicht alle Verbrechen betreffen uns aber als Urlauber in Chicago. 'LIQUOR LAW VIOLATION', d.H. ein Spirituosen Gesetzes Verstoß betrifft und als Urlauber nicht, obwohl es durchaus für die  Stadt ein größeres Problem darstellen könnte. Deshalb teilen wir die vielen verschiedenen Verbrechensarten in die zwei Kategorien schwerwiegend_Urlaub und belanglos_Urlaub ein. Besonders schwerwiegende Verbrechen, wie zum Beispiel solche, die schwere Sach-, Personen- oder psyschiche Schäden verursachen werden und von welchen wir als Urlauber ebenfalls potenziell betroffen sein könnten, werden als als schwerwiegend eingestuft, Verbrechen die eher geringfügige Schäden verursachen werden hingegen als weniger schwerwiegend eingestuft.
@@ -395,7 +352,7 @@ def klassifizieren(crime_type):
 data_cleaned['Schwere Klassifizierung'] = data_cleaned['Primary Type'].apply(klassifizieren)
 
 # %% [markdown]
-# ### Gruppierung nach Jahren
+# ## Gruppierung nach Jahren
 
 # %% [markdown]
 # Um die Analyse durchführen zu können, werden jetzt die Daten nach Jahren gruppiert, und die Anzahl schwerwiegende und nicht schwerwiegende Verbrechen für jedes Jahr summiert.
@@ -426,7 +383,7 @@ plt.legend(title='Schwere Klassifizierung')
 plt.show()
 
 # %% [markdown]
-# Es ist zu erkennen, dass die Gesamtzahl an Verbrechen sich stark reduziert hat. Aber es ist nicht wegzulassen, dass im Jahr 2022 die Anzahl an schwerwiegenden Verbrechen stark gewachsen ist, und diese zum ersten Mal die Anzahl der nicht schwerwiegende Verbrechen übertroffen hat.
+# Es ist zu erkennen, dass die Gesamtzahl an Verbrechen sich stark reduziert hat. Aber es ist nicht wegzulassen, dass im Jahr 2022 die Anzahl an für Urlauber relevante Verbrechen stark gewachsen ist, und diese zum ersten Mal die Anzahl der nicht schwerwiegende Verbrechen übertroffen hat.
 
 # %% [markdown]
 # Diesen Ereigniss wird nochmal tiefer untersucht, um zu sehen welche konkrete verbrechen am meisten zugenommen haben.
@@ -470,9 +427,26 @@ plt.show()
 # Es ist klar zu erkennen, dass Verbrechen, die mit Diebstahl zu tun haben, im Jahr 2022 stark gewachsen sind.
 
 # %% [markdown]
-# ### Schlussfolgerungen und Implikationen:
+# ## Schlussfolgerungen und Implikationen:
 
 # %% [markdown]
 # Nach der durchgeführten Analyse ist es schlusszufolgern, dass die Anzahl der gemeldeten Straftaten seit 2001 stark gesunken ist, was eine positive Entwicklung nachweist.
 # Nicht desto trotz ist die Anzahl der gemeldeten Diebstahlfälle im Jahr 2022 im Vergleich zum Jahr 2021 stark gewachsen, deswegen ist es ratsam, in einem Trip nach Chicago dies bei der Reisevorbereitung zu beachten und wertvolle Gegenstände nicht mit sich mitzunehmen.
 # Aber es ist als Schlussfolgerung zu sagen, dass Chicago heute viel sicherer ist im Vergleich zu früheren Jahren.
+
+# %% [markdown]
+# # Deployment
+# Der Großteil unserer Auswertung ist durch Lesen und anschauen der Diagramme anzuwenden. Ein interaktives Programm würde hier eher weniger Sinn machen. Bei der Heatmap ist es aber durchaus sinnvoll, wenn der Nutzer selbst Orte eingeben kann, um die Sicherheit zu überprüfen.
+#
+# Deshalb haben wir für den Verkauf an Reiseunternehmen sowie die kostenfreie Verwendung für Privatpersonen, das auf jedem PC, auf dem Python installiert ist, verwendbar ist. Da dabei nicht der Datensatz mit seinen beinahe 2 GB an Daten benötigt wird, speichern wir den dafür nötigen Teil in einer neuen Datenbank in einem neuen Ordner ab:
+
+# %%
+os.makedirs('Heatmap_Deployment', exist_ok=True)  
+crimes_2023.to_csv('Heatmap_Deployment/deployment_dataset.csv', index=False)
+
+# %% [markdown]
+# Die neue Datenbank hat nur 50 MB und ist somit besser an Nutzer verteilbar. Die Dokumentation des interaktiven Programms sowie das Programm selbst befindet sich in dem Ordner 'Heatmap_Deployment'.
+#
+# Das hier beschriebene Programm ist unser Minimum Viable Product (MVP) und im späteren Verlauf zum Verkauf an Reiseunternehmen und Privatpersonen vorgesehen.
+
+# %%
