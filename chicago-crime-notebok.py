@@ -15,6 +15,7 @@
 
 # %% [markdown]
 # # Imports
+# Vor der ersten Ausführung des Notebooks Readme.md beachten
 
 # %%
 import numpy as np
@@ -247,15 +248,15 @@ marker_Chicago_Heatmap
 # https://maps.app.goo.gl/U61Rx65AYDoEDjsu9  
 # Einschätzung: Dieses Hotel dagegen ist im Vergleich zum Rest von Chicago in einem sichereren Berreich, und ist deshalb dem Datensatz zufolge zu empfehlen
 #
-# ### Anwendung auf andere Hotels/Reiseziele
-# #### Manuelle Verwendung der Karte
+# ## Anwendung auf andere Hotels/Reiseziele
+# ### Manuelle Verwendung der Karte
 # Um ein anderes Hotel einschätzen zu können, müssen folgende Schritte befolgt werden:  
 # 1: Ein Hotel auf einem Kartedienst finden (z.B. Google Maps)  
 # 2: Das Hotel visuell auf der Heatmap aufsuchen und die Röte des Gebiets im Vergleich zum Rest der Heatmap begutachten  
 # 3: Je nach Tiefe der Röte entscheiden, ob der Ort den Sicherheitsanforderungen entspricht  
 #
 #
-# #### Abfragen basierte Verwendung der Karte
+# ### Abfragen basierte Verwendung der Karte
 # Wie im Kapitel Deployment beschrieben, ist auch eine interaktive Verwendung möglich.
 
 # %% [markdown]
@@ -355,41 +356,29 @@ data_cleaned['Schwere Klassifizierung'] = data_cleaned['Primary Type'].apply(kla
 # ## Gruppierung nach Jahren
 
 # %% [markdown]
-# Um die Analyse durchführen zu können, werden jetzt die Daten nach Jahren gruppiert, und die Anzahl schwerwiegende und nicht schwerwiegende Verbrechen für jedes Jahr summiert.
+# Um die Analyse durchführen zu können, werden jetzt die Daten nach Jahren gruppiert, und die Anzahl schwerwiegender und nicht schwerwiegender Verbrechen für jedes Jahr summiert.
 
 # %%
 gruppe = data_cleaned.groupby(['Year', 'Schwere Klassifizierung']).size().unstack()
 gruppe = gruppe.fillna(0)
-print(gruppe)
 
 # %% [markdown]
-# Diese Daten werden jetzt in Graphen, um Sie zu veranschaulichen, präsentiert.
-
-# %%
-gruppe.plot(kind='bar', stacked=True, color=['lightgrey','#FF6347'])
-plt.title('Anzahl der schwerwiegenden und nicht-schwerwiegenden Verbrechen pro Jahr')
-plt.xlabel('Jahr')
-plt.ylabel('Anzahl Verbrechen')
-plt.legend(title='Schwere Klassifizierung')
-plt.show()
+# Diese Daten werden jetzt zur Veranschaulichung in einem Diagramm präsentiert:
 
 # %%
 gruppe['Schwerwiegend'].plot(kind='line', color='red', marker='o', label='Schwerwiegend')
 gruppe['Nicht Schwerwiegend'].plot(kind='line', color='gray', marker='o', label='Nicht Schwerwiegend')
 plt.title('Anzahl der schwerwiegenden und nicht-schwerwiegenden Verbrechen pro Jahr')
+plt.grid(axis='x', color='0.5')
 plt.xlabel('Jahr')
 plt.ylabel('Anzahl Verbrechen')
 plt.legend(title='Schwere Klassifizierung')
 plt.show()
 
 # %% [markdown]
-# Es ist zu erkennen, dass die Gesamtzahl an Verbrechen sich stark reduziert hat. Aber es ist nicht wegzulassen, dass im Jahr 2022 die Anzahl an für Urlauber relevante Verbrechen stark gewachsen ist, und diese zum ersten Mal die Anzahl der nicht schwerwiegende Verbrechen übertroffen hat.
-
-# %% [markdown]
-# Diesen Ereigniss wird nochmal tiefer untersucht, um zu sehen welche konkrete verbrechen am meisten zugenommen haben.
-
-# %% [markdown]
-# Dafür werden die Daten aus den Jahren 2021 und 2022 extrahiert
+# Es ist zu erkennen, dass die Gesamtzahl an Verbrechen sich stark reduziert hat. Aber es ist nicht wegzulassen, dass im Jahr 2022 die Anzahl an für Urlauber relevante Verbrechen stark gewachsen ist. Außerdem sind 2016 zum ersten Mal mehr Schwerwiegende als nicht Schwerwiegende Verbrechen passiert.
+#
+# Diesen Ergebnis wird nochmal tiefer untersucht, um zu sehen welche konkrete verbrechen am meisten zugenommen haben.
 
 # %%
 schwere_verbrechen_2021 = data_cleaned[
@@ -402,20 +391,17 @@ schwere_verbrechen_2022 = data_cleaned[
 ]
 
 # %% [markdown]
-# Und dann werden davon die Schwerwiegende verbrechen gruppiert und extrahiert. Die Nicht Schwerwiegende werden ignoriert.
+# Daraufhin werden davon die Schwerwiegenden Verbrechen gruppiert und extrahiert. Die nicht Schwerwiegenden werden ignoriert.
 
 # %%
 schwere_verbrechen_2021_anzahl = schwere_verbrechen_2021.groupby('Primary Type').size().sort_values(ascending=False)
 schwere_verbrechen_2022_anzahl = schwere_verbrechen_2022.groupby('Primary Type').size().sort_values(ascending=False)
 
 # %% [markdown]
-# Und zulätzt für jeden Konkretes Schwerwiegendes Verbrechen die zunahme berechnet.
+# Zuletzt wird für jede Art Schwerwiegender Verbrechen die Zunahme berechnet und die Ergebnisse in einem Diagramm gezeigt
 
 # %%
 zunahme_schwere_verbrechen_2022_vs_2021 = schwere_verbrechen_2022_anzahl - schwere_verbrechen_2021_anzahl
-print(zunahme_schwere_verbrechen_2022_vs_2021)
-
-# %%
 zunahme_schwere_verbrechen_2022_vs_2021.plot(kind='bar', color='red')
 plt.title('Zunahme schwerwiegender Verbrechen 2022 vs. 2021')
 plt.xlabel('Verbrechenstyp')
@@ -436,9 +422,9 @@ plt.show()
 
 # %% [markdown]
 # # Deployment
-# Der Großteil unserer Auswertung ist durch Lesen und anschauen der Diagramme anzuwenden. Ein interaktives Programm würde hier eher weniger Sinn machen. Bei der Heatmap ist es aber durchaus sinnvoll, wenn der Nutzer selbst Orte eingeben kann, um die Sicherheit zu überprüfen.
+# Der Großteil unserer Auswertung ist durch Lesen und Anschauen der Diagramme anzuwenden. Ein interaktives Programm würde hier eher weniger Sinn machen. Bei der Heatmap ist es aber durchaus sinnvoll, wenn der Nutzer selbst Orte eingeben kann, um die Sicherheit zu überprüfen.
 #
-# Deshalb haben wir für den Verkauf an Reiseunternehmen sowie die kostenfreie Verwendung für Privatpersonen, das auf jedem PC, auf dem Python installiert ist, verwendbar ist. Da dabei nicht der Datensatz mit seinen beinahe 2 GB an Daten benötigt wird, speichern wir den dafür nötigen Teil in einer neuen Datenbank in einem neuen Ordner ab:
+# Deshalb erstellen wir ein Programm, das auf jedem PC, auf dem Python installiert ist, verwendbar ist. Da dabei nicht der Datensatz mit seinen beinahe 2 GB an Daten benötigt wird, speichern wir den dafür nötigen Teil in einer neuen Datenbank in einem neuen Ordner ab:
 
 # %%
 os.makedirs('Heatmap_Deployment', exist_ok=True)  
