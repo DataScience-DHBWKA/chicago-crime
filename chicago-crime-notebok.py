@@ -29,10 +29,34 @@ from folium.plugins import HeatMap
 from folium.plugins import DualMap
 
 # %% [markdown]
-# # Einleitung
+# # 0. Fragestellung
 
 # %% [markdown]
-# Als erstes lesen wir hier den Datensatz ein, und schauen uns ein paar Eigenschaften an, die für uns interressant sind.
+# Für unser Projekt stellen wir uns die Frage, wie man als Privatperson am Besten einen Trip nach Chicago plant, sodass die Wahrscheinlichkeit in ein Verbrechen verwickelt zu werden 
+# am Niedrigsten ist.  
+# Chicago gilt als sehr unsichere Stadt, also wollen wir Leuten, die nach Chicago reisen wollen, einige auf Statistiken basierende Tips geben, um nicht in Verbrechen verwickelt zu werden.  
+# Wir orientierten uns im Allgemeinen am Crisp-DM Prozess um einen strukturierten Projektablauf durchführbar zu machen.
+
+# %% [markdown]
+# # 1. Business Understanding
+
+# %% [markdown]
+# Um eine wertvolles Ergebnis zu unserer Fragestellung zu erhalten sind die Fragen, die wir uns hauptsächlich stellen:  
+#     1. In welchen Regionen von Chicago ist es am Gefährlichsten?  
+#     2. Zu welcher Tageszeit ist es am Sichersten sich aus seiner Unterkunft heraus zu begeben?  
+#     3. In welchen Monaten sollte man nach Chicago reisen, um Verbrechen am Besten zu vermeiden?  
+#     4. Ist Chicago in den letzten Jahren "sicherer" geworden?
+#     5. Vor welchen Verbrechen sollte ich besonders Ausschau halten?  
+#     
+# Daten, die Ortschaften, Zeiten sowie Verbrechensart enthalten, sind für uns also am relevantesten.
+
+# %% [markdown]
+# # 2. Data Understanding
+
+# %% [markdown]
+# Wir haben uns für einen Datensatz entschieden, der vom Chicago Police Department zur Verfügung gestellt wird.  
+# Grund dafür ist die Verlässlichkeit der Quelle und die Vielzahl an für uns relevanten Daten.  
+# Als erstes lesen wir den Datensatz ein, und schauen uns den Aufbau der Daten an.  
 
 # %%
 chicago_crime_data = pd.read_csv('crimes-chicago-dataset.csv')
@@ -50,11 +74,11 @@ chicago_crime_data.info()
 # Hieraus können wir folgende, für uns weitergehend wichtige Erkenntnisse ziehen:
 # 1. Wir wissen unser Code hat 7931583 Einträge mit 22 Datenspalten.
 # 2. Wir haben eine Vorstellung davon, welche Daten wir vorliegen haben, um unser weiteres Vorgehen zu planen.
-# 3. Wir wissen wie unsere Merkmalsausprägungen skaliert sind (die meisten nominal, aber z.B. die Spalte "Description" ist ordinal skaliert.
+# 3. Wir wissen wie unsere Merkmalsausprägungen skaliert sind (die meisten nominal, aber z.B. die Spalte "Description" ist ordinal skaliert.)
 # 4. Wir können einordnen in welchen Datentypen die jeweiligen Daten gespeichert sind, und wissen wie wir weiter mit diesen vorgehen müssen.
 
 # %% [markdown]
-# # Data Cleaning
+# # 3. Data Preparation
 # Die meisten Datensätze sind nicht vollständig. Die fehlenden Felder können zum Beispiel entweder fehlender Sorgfalt beim Füllen des Datensatzes von Menschen geschuldet sein, oder manche Daten sind einfach nicht verfügbar. 
 #
 # Die Anzahl dieser fehlenden Datenstellen können wir mit isnull().sum() auslesen. Außerdem berechnen wir für ein besseres Verständnis die Prozentzahl von Daten, die fehlen:
@@ -106,26 +130,10 @@ print("Der Datensatz hat nach Ausschließung der häuslichen Verbrechen noch " +
 data_cleaned = crimes_public
 
 # %% [markdown]
-# # Ende Data Cleaning
-
-# %%
-pd.set_option('display.float_format', '{:.2f}'.format)
-chicago_crime_data.describe()
-
-# %%
-chicago_crime_data_numeric = chicago_crime_data.select_dtypes(include=[float, int])
-
-# %%
-correlation_matrix = chicago_crime_data_numeric.corr()
-
-# %%
-plt.figure(figsize=(12, 8))
-sns.heatmap(correlation_matrix, annot=True, cmap='coolwarm', linewidths=.5)
-plt.title('Kreuzkorrelation der numerischen Spalten')
-plt.show()
+# # 4. Modeling
 
 # %% [markdown]
-# # Heatmap von Chicago
+# # 4.1 Heatmap von Chicago
 
 # %% [markdown]
 # Große Städte verändern sich ständig. Stadtmittelpunkte, Touristenattraktionen und andere Orte von Menschenansammlungen verändern und verschieben sich, wenn neue Orte ausgebaut werden und alte Geschäfte/Viertel geschlossen werden. Deswegen werden wir für die Heatmap nur die Verbrechen beachten, die dieses Jahr geschehen sind. Dieser Zeitraum wurde so gewählt, weil so in den vergangenen 11 Monaten genügend Daten angefallen sind und die Geodaten aber trotzdem aktuell genug sein sollten, um verlässliche Aussagen über die Sicherheit der Orte zu treffen. Außerdem sind die Daten so weniger stark beinflusst von den temporär veränderten Öffentlichkeitsaufhalten der Bevölkerungen durch die Covid 19 Pandemie und deren Lockdowns, da im Jahr 2023 generell die meisten Beschränkungen aufgehoben wurden. 
@@ -261,11 +269,11 @@ marker_Chicago_Heatmap
 
 # %% [markdown]
 #
-# # Sichere Tageszeiten?
+# # 4.2 Sichere Tageszeiten?
 
 # %% [markdown]
 # Hier stellen wir die jeweilige Tageszeiten, zu denen Verbrechen geschehen sind, als Histogramm dar.
-# Wir müssen zuerst die Date Spalte von Objects zu Datetimes konvetieren, um dann mit diesen einen Plot erstellen zu können, indem wir aus der Datetime direkt die Stunde rausziehen.
+# Wir müssen zuerst die Date Spalte von Objects zu Datetimes konvertieren, um dann mit diesen einen Plot erstellen zu können, indem wir aus der Datetime direkt die Stunde rausziehen.
 
 # %%
 #Umformatierung der Daten zu Datetimes
@@ -283,7 +291,7 @@ fig.set(xlabel='Hour', ylabel='Amount of commited Crimes')
 # Unser Fazit hier ist, dass wir aus diesem Histogramm leider keine erkenntliche Einsicht über eine empfehlenswerte Tageszeit zum rausgehen gewinnen können.
 
 # %% [markdown]
-# # Sichere Jahreszeiten?
+# # 4.3 Sichere Jahreszeiten?
 
 # %% [markdown]
 # Wir fangen an, indem wir eine Methode definieren, die uns die Jahreszeit je nach Monat angibt.
@@ -318,7 +326,7 @@ plt.show()
 # Für einen Trip nach Chicago würde sich also definitv der Winter anbieten!
 
 # %% [markdown]
-# # Klassifizierung der Verbrechen
+# # 4.4 Klassifizierung der Verbrechen
 # ## Klassifizierung
 
 # %% [markdown]
@@ -421,7 +429,16 @@ plt.show()
 # Aber es ist als Schlussfolgerung zu sagen, dass Chicago heute viel sicherer ist im Vergleich zu früheren Jahren.
 
 # %% [markdown]
-# # Deployment
+# # 5. Evaluation
+#  Unsere Antworten zu den am Anfang gestellten Fragen sind also wiefolgt:  
+#    1. Aus der Heatmap kann man deutlich die gefährlichsten Ortschaften direkt herauslesen, und wir können eine gute Einschätzung der Gefährlichkeit vornehmen.
+#    2. Eine besonders sichere Tageszeit lässt sich nicht direkt erkennen.
+#    3. Für eine sichere Reise nach Chicago bieten sich die Wintermonate am Meisten an.
+#    4. Verbrechen in Chicago sind über die Jahre deutlich gesunken, die Stadt arbeitet also stark daran, ihren Ruf zu verbessern!
+#    5. Vor allem sollte man sich vor Diebstahl in Acht nehmen.
+
+# %% [markdown]
+# # 6. Deployment
 # Der Großteil unserer Auswertung ist durch Lesen und Anschauen der Diagramme anzuwenden. Ein interaktives Programm würde hier eher weniger Sinn machen. Bei der Heatmap ist es aber durchaus sinnvoll, wenn der Nutzer selbst Orte eingeben kann, um die Sicherheit zu überprüfen.
 #
 # Deshalb erstellen wir ein Programm, das auf jedem PC, auf dem Python installiert ist, verwendbar ist. Da dabei nicht der Datensatz mit seinen beinahe 2 GB an Daten benötigt wird, speichern wir den dafür nötigen Teil in einer neuen Datenbank in einem neuen Ordner ab:
