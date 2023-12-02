@@ -237,23 +237,12 @@ fl.Marker(
 marker_Chicago_Heatmap.save('Karten/Chicago_Heatmap_Marker.html')
 marker_Chicago_Heatmap
 
-# %% [markdown]
+# %% [markdown] jp-MarkdownHeadingCollapsed=true
 # Durch einen klick mit dem Mauszeiger kann auch direkt auf der Karte der Name des Hotels und der entsprechende Google Maps link eingesehen werden. Da aber nicht jeder die Karte interaktiv zur Hand haben wird, sind hier auch noch einmal die Informationen sowie die Sicherheitseinschätzung des Gebiets dem Datensatz zufolge aufgelistet:
 #
-# Hotel 1:  
-# W Chicago - Lakeshore  
-# https://maps.app.goo.gl/kRhLEB6UwdkJGLiJA  
-# Einschätzung: Das "W Chicago - Lakeshore" Hotel ist offensichtlich keine gute Wahl, da der roten Umgebungsfarbe nach zu urteilen die Umgebung nicht sehr sicher ist. 
-#
-# Hotel 2:  
-# The Allegro Royal Sonesta Hotel Chicago Loop  
-# https://maps.app.goo.gl/eNWMsavhf1eFtzj47  
-# Einschätzung: Auch dieses Hotel liegt in einem sehr roten Berreich, deshalb ist dem Datensatz nach zu schließen auch dieses Hotel und der umliegende Berreich zu meiden.  
-#
-# Hotel 3:  
-# The Polo Inn Bed & Breakfast  
-# https://maps.app.goo.gl/U61Rx65AYDoEDjsu9  
-# Einschätzung: Dieses Hotel dagegen ist im Vergleich zum Rest von Chicago in einem sichereren Berreich, und ist deshalb dem Datensatz zufolge zu empfehlen
+# 1: Das "W Chicago - Lakeshore" Hotel ist offensichtlich keine gute Wahl, da der roten Umgebungsfarbe nach zu urteilen die Umgebung nicht sehr sicher ist.  
+# 2: Das "The Allegro Royal Sonesta Hotel Chicago Loop" Hotel liegt in einem sehr roten Berreich, deshalb ist dem Datensatz nach zu schließen auch dieses Hotel und der umliegende Berreich zu meiden.  
+# 3: Das "The Polo Inn Bed & Breakfast" Hotel dagegen ist im Vergleich zum Rest von Chicago in einem sichereren Berreich, und ist deshalb dem Datensatz zufolge zu empfehlen
 #
 # ### Anwendung auf andere Hotels/Reiseziele
 # #### Manuelle Verwendung der Karte
@@ -341,7 +330,7 @@ print(unique_types)
 # Nach einiger Überlegung und Evaluation stufen wir nun die folgenden Verbrechen als schwerwiegend für Urlauber ein: 'THEFT', 'ASSAULT', 'WEAPONS VIOLATION','SEX OFFENSE','CRIM SEXUAL ASSAULT','MOTOR VEHICLE THEFT','CRIMINAL TRESPASS','ROBBERY','PUBLIC PEACE VIOLATION','CRIMINAL SEXUAL ASSAULT','HOMICIDE', 'KIDNAPPING' und 'HUMAN TRAFFICKING'. Diese werden in der Liste schwerwiegend_Urlaub als Zeichenkette gespeichert:
 
 # %%
-schwerwiegende_verbrechen = ['THEFT', 'ASSAULT', 'WEAPONS VIOLATION','SEX OFFENSE','CRIM SEXUAL ASSAULT','MOTOR VEHICLE THEFT','CRIMINAL TRESPASS','ROBBERY','PUBLIC PEACE VIOLATION','CRIMINAL SEXUAL ASSAULT','HOMICIDE', 'KIDNAPPING','HUMAN TRAFFICKING']
+schwerwiegend_Urlaub = ['THEFT', 'ASSAULT', 'WEAPONS VIOLATION','SEX OFFENSE','CRIM SEXUAL ASSAULT','MOTOR VEHICLE THEFT','CRIMINAL TRESPASS','ROBBERY','PUBLIC PEACE VIOLATION','CRIMINAL SEXUAL ASSAULT','HOMICIDE', 'KIDNAPPING','HUMAN TRAFFICKING']
 
 
 # %% [markdown]
@@ -351,7 +340,7 @@ schwerwiegende_verbrechen = ['THEFT', 'ASSAULT', 'WEAPONS VIOLATION','SEX OFFENS
 
 # %%
 def klassifizieren(crime_type):
-    if crime_type in schwerwiegende_verbrechen:
+    if crime_type in schwerwiegend_Urlaub:
         return 'Schwerwiegend'
     else:
         return 'Nicht Schwerwiegend'
@@ -418,25 +407,20 @@ plt.show()
 
 # %% [markdown]
 # Es ist klar zu erkennen, dass Verbrechen, die mit Diebstahl zu tun haben, im Jahr 2022 stark gewachsen sind.
-
-# %% [markdown]
+#
 # ### Schlussfolgerungen und Implikationen:
-
-# %% [markdown]
 # Nach der durchgeführten Analyse ist es schlusszufolgern, dass die Anzahl der gemeldeten Straftaten seit 2001 stark gesunken ist, was eine positive Entwicklung nachweist.
-# Nicht desto trotz ist die Anzahl der gemeldeten Diebstahlfälle im Jahr 2022 im Vergleich zum Jahr 2021 stark gewachsen, deswegen ist es ratsam, in einem Trip nach Chicago dies bei der Reisevorbereitung zu beachten und wertvolle Gegenstände nicht mit sich mitzunehmen.
-# Aber es ist als Schlussfolgerung zu sagen, dass Chicago heute viel sicherer ist im Vergleich zu früheren Jahren.
-
-# %% [markdown]
+# Nicht desto trotz ist die Anzahl der gemeldeten Diebstahlfälle im Jahr 2022 im Vergleich zum Jahr 2021 stark gewachsen, deswegen ist es ratsam, in einem Trip nach Chicago dies bei der Reisevorbereitung zu beachten und wertvolle Gegenstände nicht mit sich mitzunehmen.  
+# Schlussfolgernd kann man aber sagen, dass Chicago heute viel sicherer ist im Vergleich zu früheren Jahren.
+#
 # # Evaluation
 #  Unsere Antworten zu den am Anfang gestellten Fragen sind also wiefolgt:  
-#    1. Aus der Heatmap kann man deutlich die gefährlichsten Ortschaften direkt herauslesen, und wir können eine gute Einschätzung der Gefährlichkeit vornehmen.
+#    1. Aus der Heatmap kann man deutlich die gefährlichsten Ortschaften direkt herauslesen. womit wir eine gute Einschätzung der Gefährlichkeit vornehmen können.
 #    2. Eine besonders sichere Tageszeit lässt sich nicht direkt erkennen.
 #    3. Für eine sichere Reise nach Chicago bieten sich die Wintermonate am Meisten an.
-#    4. Verbrechen in Chicago sind über die Jahre deutlich gesunken, die Stadt arbeitet also stark daran, ihren Ruf zu verbessern!
-#    5. Vor allem sollte man sich vor Diebstahl in Acht nehmen.
-
-# %% [markdown]
+#    4. Verbrechen in Chicago sind über die Jahre deutlich gesunken, die Stadt arbeitet also daran, ihren Ruf zu verbessern!
+#    5. Als Urlauber sollte man sich vor allem vor Diebstahl in Acht nehmen.
+#    
 # # Deployment
 # Der Großteil unserer Auswertung ist durch Lesen und Anschauen der Diagramme anzuwenden. Ein interaktives Programm würde hier eher weniger Sinn machen. Bei der Heatmap ist es aber durchaus sinnvoll, wenn der Nutzer selbst Orte eingeben kann, um die Sicherheit zu überprüfen.
 #
@@ -449,4 +433,4 @@ crimes_2023.to_csv('Heatmap_Deployment/deployment_dataset.csv', index=False)
 # %% [markdown]
 # Die neue Datenbank hat nur 50 MB und ist somit besser an Nutzer verteilbar. Die Dokumentation des interaktiven Programms sowie das Programm selbst befindet sich in dem Ordner 'Heatmap_Deployment'.
 #
-# Das hier beschriebene Programm ist unser Minimum Viable Product (MVP) und im späteren Verlauf zum Verkauf an Reiseunternehmen und Privatpersonen vorgesehen.
+# Das hier beschriebene Programm ist unser Minimum Viable Product (MVP) und ist im späteren Projektverlauf zum Verkauf an Reiseunternehmen und Privatpersonen vorgesehen.
