@@ -14,8 +14,30 @@
 # ---
 
 # %% [markdown]
-# # Imports
-# Vor der ersten Ausführung des Notebooks Readme.md beachten
+# # Fragestellung
+
+# %% [markdown]
+# Für unser Projekt stellen wir uns die Frage, wie man als Privatperson am Besten einen Trip nach Chicago plant, sodass die Wahrscheinlichkeit in ein Verbrechen verwickelt zu werden 
+# am Niedrigsten ist.  
+# Chicago gilt als sehr unsichere Stadt, also wollen wir Leuten, die nach Chicago reisen wollen, einige auf Statistiken basierende Tips geben, um nicht in Verbrechen verwickelt zu werden.  
+# Wir orientierten uns im Allgemeinen am Crisp-DM Prozess um einen strukturierten Projektablauf durchführbar zu machen.
+
+# %% [markdown]
+# # Business Understanding
+
+# %% [markdown]
+# Um eine wertvolles Ergebnis zu unserer Fragestellung zu erhalten sind die Fragen, die wir uns hauptsächlich stellen:  
+#     1. In welchen Regionen von Chicago ist es am Gefährlichsten?  
+#     2. Zu welcher Tageszeit ist es am Sichersten sich aus seiner Unterkunft heraus zu begeben?  
+#     3. In welchen Monaten sollte man nach Chicago reisen, um Verbrechen am Besten zu vermeiden?  
+#     4. Ist Chicago in den letzten Jahren "sicherer" geworden?
+#     5. Vor welchen Verbrechen sollte ich besonders Ausschau halten?  
+#     
+# Daten, die Ortschaften, Zeiten sowie Verbrechensart enthalten, sind für uns also am relevantesten.
+
+# %% [markdown]
+# # Data Understanding
+# Zuerst importieren wir die benötigten Bibliotheken.
 
 # %%
 import numpy as np
@@ -29,46 +51,22 @@ from folium.plugins import HeatMap
 from folium.plugins import DualMap
 
 # %% [markdown]
-# # 0. Fragestellung
-
-# %% [markdown]
-# Für unser Projekt stellen wir uns die Frage, wie man als Privatperson am Besten einen Trip nach Chicago plant, sodass die Wahrscheinlichkeit in ein Verbrechen verwickelt zu werden 
-# am Niedrigsten ist.  
-# Chicago gilt als sehr unsichere Stadt, also wollen wir Leuten, die nach Chicago reisen wollen, einige auf Statistiken basierende Tips geben, um nicht in Verbrechen verwickelt zu werden.  
-# Wir orientierten uns im Allgemeinen am Crisp-DM Prozess um einen strukturierten Projektablauf durchführbar zu machen.
-
-# %% [markdown]
-# # 1. Business Understanding
-
-# %% [markdown]
-# Um eine wertvolles Ergebnis zu unserer Fragestellung zu erhalten sind die Fragen, die wir uns hauptsächlich stellen:  
-#     1. In welchen Regionen von Chicago ist es am Gefährlichsten?  
-#     2. Zu welcher Tageszeit ist es am Sichersten sich aus seiner Unterkunft heraus zu begeben?  
-#     3. In welchen Monaten sollte man nach Chicago reisen, um Verbrechen am Besten zu vermeiden?  
-#     4. Ist Chicago in den letzten Jahren "sicherer" geworden?
-#     5. Vor welchen Verbrechen sollte ich besonders Ausschau halten?  
-#     
-# Daten, die Ortschaften, Zeiten sowie Verbrechensart enthalten, sind für uns also am relevantesten.
-
-# %% [markdown]
-# # 2. Data Understanding
-
-# %% [markdown]
-# Wir haben uns für einen Datensatz entschieden, der vom Chicago Police Department zur Verfügung gestellt wird.  
-# Grund dafür ist die Verlässlichkeit der Quelle und die Vielzahl an für uns relevanten Daten.  
-# Als erstes lesen wir den Datensatz ein, und schauen uns den Aufbau der Daten an.  
+# Wir haben uns für einen Datensatz entschieden, der vom Chicago Police Department zur Verfügung gestellt wird. Grund dafür ist die Verlässlichkeit der Quelle und die Vielzahl an für uns relevanten Daten.  
+# Als erstes lesen wir den Datensatz ein, und schauen uns den Aufbau der Daten an:  
 
 # %%
 chicago_crime_data = pd.read_csv('crimes-chicago-dataset.csv')
 
-# %%
-print('chicago_crime_data hat',chicago_crime_data.shape[1],'spalten und',chicago_crime_data.shape[0],'zeilen.' )
+#Datentypen abspeichern
+datentypen = chicago_crime_data.dtypes.rename("Datentyp:")
 
-# %%
-chicago_crime_data.head()
+#Für jeden Datentyp wird ein Wert abgespeichert
+beispielDaten = chicago_crime_data.iloc[2].rename("Beispiel:")
 
-# %%
-chicago_crime_data.info()
+#Kombiniert die Datentypen mit ihrem jeweiligen Beispielswert
+datentyp_beispiel = pd.concat([datentypen, beispielDaten], axis=1)
+print(datentyp_beispiel)
+print('Der Datensatz hat',chicago_crime_data.shape[1],'Spalten und',chicago_crime_data.shape[0],'Zeilen.' )
 
 # %% [markdown]
 # Hieraus können wir folgende, für uns weitergehend wichtige Erkenntnisse ziehen:
@@ -78,7 +76,8 @@ chicago_crime_data.info()
 # 4. Wir können einordnen in welchen Datentypen die jeweiligen Daten gespeichert sind, und wissen wie wir weiter mit diesen vorgehen müssen.
 
 # %% [markdown]
-# # 3. Data Preparation
+# # Data Preparation
+# ## Data Cleaning
 # Die meisten Datensätze sind nicht vollständig. Die fehlenden Felder können zum Beispiel entweder fehlender Sorgfalt beim Füllen des Datensatzes von Menschen geschuldet sein, oder manche Daten sind einfach nicht verfügbar. 
 #
 # Die Anzahl dieser fehlenden Datenstellen können wir mit isnull().sum() auslesen. Außerdem berechnen wir für ein besseres Verständnis die Prozentzahl von Daten, die fehlen:
@@ -118,7 +117,7 @@ print("Der Datensatz hat nach dem Data Cleaning noch " + str(data_cleaned.shape[
 # %% [markdown]
 # *Die Anzahl an Reihen ist dabei mehr als 1 Prozent gesunken, da pro fehlender Wert die gesamte Reihe an Daten (22 Datenfelder) gelöscht wird, nicht nur das fehlende Datenfeld*
 #
-# ### Auschließung von häusliche Verbrechen
+# ## Auschließung von häuslichen Verbrechen
 # Da wir mit unserer Auswertung herausfinden wollen, wo ein Urlaubstrip nach Chicago am sichersten ist, können wir alle Verbrechen aus dem Datensatz herausfiltern, die nicht in der Öffentlichkeit geschehen sind. Häusliche Verbrechen betreffen uns als Urlauber schließlich eher nicht.
 
 # %%
@@ -130,21 +129,21 @@ print("Der Datensatz hat nach Ausschließung der häuslichen Verbrechen noch " +
 data_cleaned = crimes_public
 
 # %% [markdown]
-# # 4. Modeling
+# # Modeling
 
 # %% [markdown]
-# # 4.1 Heatmap von Chicago
+# ## Heatmap von Chicago
 
 # %% [markdown]
 # Große Städte verändern sich ständig. Stadtmittelpunkte, Touristenattraktionen und andere Orte von Menschenansammlungen verändern und verschieben sich, wenn neue Orte ausgebaut werden und alte Geschäfte/Viertel geschlossen werden. Deswegen werden wir für die Heatmap nur die Verbrechen beachten, die dieses Jahr geschehen sind. Dieser Zeitraum wurde so gewählt, weil so in den vergangenen 11 Monaten genügend Daten angefallen sind und die Geodaten aber trotzdem aktuell genug sein sollten, um verlässliche Aussagen über die Sicherheit der Orte zu treffen. Außerdem sind die Daten so weniger stark beinflusst von den temporär veränderten Öffentlichkeitsaufhalten der Bevölkerungen durch die Covid 19 Pandemie und deren Lockdowns, da im Jahr 2023 generell die meisten Beschränkungen aufgehoben wurden. 
 #
-# Wir erstellen also ein neues Dataframe, in dem nur die Verbrechen im Jahr 2019 enthalten sind:
+# Wir erstellen also ein neues Dataframe, in dem nur die im Jahr 2023 geschehenen Verbrechen enthalten sind:
 
 # %%
 crimes_2023 = data_cleaned.loc[data_cleaned['Year'] == 2023]
 
 # %% [markdown]
-# ## Kartenerstellung
+# ### Kartenerstellung
 # Wir beginnen, indem wir ein neues Kartenobjekt mit dem Namen "karte_Chicago" erstellen, dessen Mittelpunkt eine Koordinate in Chicago ist. Außerdem erstellen wir einen Ordner (falls dieser nicht bereits exisitert), in dem wir alle Karten speichern werden:
 
 # %%
@@ -170,7 +169,7 @@ karte_Chicago_Heatmap
 # %% [markdown]
 # Aus der Verteilung der Verbrechen in Chicago kann man den Schluss ziehen, das es in dichter besiedelten Gebieten mehr Verbrechen gibt. Um dies zu bestätigen, können wir mit der Folium Library auch einen Vergleich der Heatmap mit einer leeren Satellitenkarte herstellen.
 #
-# ## Vergleich mit Satellitenbildern
+# ### Vergleich mit Satellitenbildern
 # Dafür erstellern wir zuerst ein neues Folium DualMap Kartenobjekt "vergleich":
 
 # %%
@@ -208,7 +207,7 @@ vergleich
 # %% [markdown]
 # Wir können also sehen, das in dichter besiedelten und bebauten Gebieten mehr Verbrechen geschehen. Somit kann man als allgemeine Handlungsempfehlung sagen, das man für einen möglichst sicheren Chicago Trip dicht besiedelte Orte eher meiden sollte.
 #
-# ## Anwendung auf bestimmte Reiseziele
+# ### Anwendung auf bestimmte Reiseziele
 # Um nun konkretere Reiseempfelungen treffen zu können, sollte man interessante Reiseziele oder Hotels erst in dieser Karte aufsuchen, um deren Sicherheit zu bestimmen. Als Beispiel fügen wir einige Hotels mit deren Koordinaten in der Karte als Marker ein:
 
 # %%
@@ -256,20 +255,20 @@ marker_Chicago_Heatmap
 # https://maps.app.goo.gl/U61Rx65AYDoEDjsu9  
 # Einschätzung: Dieses Hotel dagegen ist im Vergleich zum Rest von Chicago in einem sichereren Berreich, und ist deshalb dem Datensatz zufolge zu empfehlen
 #
-# ## Anwendung auf andere Hotels/Reiseziele
-# ### Manuelle Verwendung der Karte
+# ### Anwendung auf andere Hotels/Reiseziele
+# #### Manuelle Verwendung der Karte
 # Um ein anderes Hotel einschätzen zu können, müssen folgende Schritte befolgt werden:  
 # 1: Ein Hotel auf einem Kartedienst finden (z.B. Google Maps)  
 # 2: Das Hotel visuell auf der Heatmap aufsuchen und die Röte des Gebiets im Vergleich zum Rest der Heatmap begutachten  
 # 3: Je nach Tiefe der Röte entscheiden, ob der Ort den Sicherheitsanforderungen entspricht  
 #
 #
-# ### Abfragen basierte Verwendung der Karte
+# #### Abfragen basierte Verwendung der Karte
 # Wie im Kapitel Deployment beschrieben, ist auch eine interaktive Verwendung möglich.
 
 # %% [markdown]
 #
-# # 4.2 Sichere Tageszeiten?
+# ## Sichere Tageszeiten?
 
 # %% [markdown]
 # Hier stellen wir die jeweilige Tageszeiten, zu denen Verbrechen geschehen sind, als Histogramm dar.
@@ -280,7 +279,7 @@ marker_Chicago_Heatmap
 data_cleaned['Date'] = pd.to_datetime(data_cleaned['Date'], format='%m/%d/%Y %I:%M:%S %p')
 day_of_month_chicago_crime_data = data_cleaned['Date'].dt.hour
 fig = sns.histplot(day_of_month_chicago_crime_data, kde=False, bins=24)
-fig.set(xlabel='Hour', ylabel='Amount of commited Crimes')
+fig.set(xlabel='Hour', ylabel='Amount of commited Crimes');
 
 
 # %% [markdown]
@@ -291,7 +290,7 @@ fig.set(xlabel='Hour', ylabel='Amount of commited Crimes')
 # Unser Fazit hier ist, dass wir aus diesem Histogramm leider keine erkenntliche Einsicht über eine empfehlenswerte Tageszeit zum rausgehen gewinnen können.
 
 # %% [markdown]
-# # 4.3 Sichere Jahreszeiten?
+# ## Sichere Jahreszeiten?
 
 # %% [markdown]
 # Wir fangen an, indem wir eine Methode definieren, die uns die Jahreszeit je nach Monat angibt.
@@ -326,8 +325,8 @@ plt.show()
 # Für einen Trip nach Chicago würde sich also definitv der Winter anbieten!
 
 # %% [markdown]
-# # 4.4 Klassifizierung der Verbrechen
-# ## Klassifizierung
+# ## Klassifizierung der Verbrechen
+# ### Klassifizierung
 
 # %% [markdown]
 # In unserem Datensatz sowie im echten Leben gibt es viele verschiedene Verbrechenskategorien. Diese variieren von vergleichsweise harmlosen Gesetzesverstößen wie Taschendiebstahl bis hin zu schweren Verbrechen wie Mord. Nicht alle Verbrechen betreffen uns aber als Urlauber in Chicago. 'LIQUOR LAW VIOLATION', d.H. ein Spirituosen Gesetzes Verstoß betrifft und als Urlauber nicht, obwohl es durchaus für die  Stadt ein größeres Problem darstellen könnte. Deshalb teilen wir die vielen verschiedenen Verbrechensarten in die zwei Kategorien schwerwiegend_Urlaub und belanglos_Urlaub ein. Besonders schwerwiegende Verbrechen, wie zum Beispiel solche, die schwere Sach-, Personen- oder psyschiche Schäden verursachen werden und von welchen wir als Urlauber ebenfalls potenziell betroffen sein könnten, werden als als schwerwiegend eingestuft, Verbrechen die eher geringfügige Schäden verursachen werden hingegen als weniger schwerwiegend eingestuft.
@@ -361,7 +360,7 @@ def klassifizieren(crime_type):
 data_cleaned['Schwere Klassifizierung'] = data_cleaned['Primary Type'].apply(klassifizieren)
 
 # %% [markdown]
-# ## Gruppierung nach Jahren
+# ### Gruppierung nach Jahren
 
 # %% [markdown]
 # Um die Analyse durchführen zu können, werden jetzt die Daten nach Jahren gruppiert, und die Anzahl schwerwiegender und nicht schwerwiegender Verbrechen für jedes Jahr summiert.
@@ -421,7 +420,7 @@ plt.show()
 # Es ist klar zu erkennen, dass Verbrechen, die mit Diebstahl zu tun haben, im Jahr 2022 stark gewachsen sind.
 
 # %% [markdown]
-# ## Schlussfolgerungen und Implikationen:
+# ### Schlussfolgerungen und Implikationen:
 
 # %% [markdown]
 # Nach der durchgeführten Analyse ist es schlusszufolgern, dass die Anzahl der gemeldeten Straftaten seit 2001 stark gesunken ist, was eine positive Entwicklung nachweist.
@@ -429,7 +428,7 @@ plt.show()
 # Aber es ist als Schlussfolgerung zu sagen, dass Chicago heute viel sicherer ist im Vergleich zu früheren Jahren.
 
 # %% [markdown]
-# # 5. Evaluation
+# # Evaluation
 #  Unsere Antworten zu den am Anfang gestellten Fragen sind also wiefolgt:  
 #    1. Aus der Heatmap kann man deutlich die gefährlichsten Ortschaften direkt herauslesen, und wir können eine gute Einschätzung der Gefährlichkeit vornehmen.
 #    2. Eine besonders sichere Tageszeit lässt sich nicht direkt erkennen.
@@ -438,7 +437,7 @@ plt.show()
 #    5. Vor allem sollte man sich vor Diebstahl in Acht nehmen.
 
 # %% [markdown]
-# # 6. Deployment
+# # Deployment
 # Der Großteil unserer Auswertung ist durch Lesen und Anschauen der Diagramme anzuwenden. Ein interaktives Programm würde hier eher weniger Sinn machen. Bei der Heatmap ist es aber durchaus sinnvoll, wenn der Nutzer selbst Orte eingeben kann, um die Sicherheit zu überprüfen.
 #
 # Deshalb erstellen wir ein Programm, das auf jedem PC, auf dem Python installiert ist, verwendbar ist. Da dabei nicht der Datensatz mit seinen beinahe 2 GB an Daten benötigt wird, speichern wir den dafür nötigen Teil in einer neuen Datenbank in einem neuen Ordner ab:
@@ -451,5 +450,3 @@ crimes_2023.to_csv('Heatmap_Deployment/deployment_dataset.csv', index=False)
 # Die neue Datenbank hat nur 50 MB und ist somit besser an Nutzer verteilbar. Die Dokumentation des interaktiven Programms sowie das Programm selbst befindet sich in dem Ordner 'Heatmap_Deployment'.
 #
 # Das hier beschriebene Programm ist unser Minimum Viable Product (MVP) und im späteren Verlauf zum Verkauf an Reiseunternehmen und Privatpersonen vorgesehen.
-
-# %%

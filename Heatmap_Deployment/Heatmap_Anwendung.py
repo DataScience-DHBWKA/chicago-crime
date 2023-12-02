@@ -7,11 +7,12 @@ from folium.plugins import DualMap#
 #Dataset importieren
 crime_2023 = pd.read_csv('deployment_dataset.csv')
 
-#Heatmap machen, siehe Hauptnotebook für Erklärungen
+#Heatmap erstellen, siehe Hauptnotebook für Erklärungen
 karte_Chicago_Inputmarker = fl.Map(location = [41.863474, -87.613654], zoom_start = 11, control_scale=True,)
 lat_long = crime_2023[['Latitude', 'Longitude']].values.tolist()
 HeatMap(lat_long, radius=(30), blur=(30),).add_to(karte_Chicago_Inputmarker)
 
+#Inputabfragen
 input_verwenden = True
 if (input_verwenden == True):
     input_command = " "

@@ -8,14 +8,14 @@ Im Python Enviroment
 pip install -r requirements.txt
 eingeben. Dadurch werden alle benötigten Packages installiert
 
-1: Ein Hotel und deren Koordinaten finden, z.B. auf Google Maps ein Hotel rechtsklicken, mit einem Klick auf die dann angezeigten Koordinaten werden diese dann kopiert.  
+1: Einen Ort und dessen Koordinaten finden, z.B. auf Google Maps ein Hotel rechtsklicken, mit einem Klick auf die dann angezeigten Koordinaten werden diese dann kopiert.  
 2: Die Koordinaten müssen im Format "Latitude, Longitude" sein (von Google Maps kopierte Daten sind automatisch auf diese Weise formatiert). Ein Beispiel ist "41.88409255624877, -87.63483254654416"  
-3: Die untere Zelle ausführen  
-4: Koordinaten in das angefragte Inputfeld einkopieren  
+3: Heatmap_Anwendung.py ausführen
+4: Koordinaten in das angefragte Inputfeld einfügen
 5: wenn gewünscht Name eingeben  (ansonsten ohne Eingabe Enter drücken)
-6: wenn gewünscht Link eingeben  
-7: wenn gewünscht Kommando eingeben:  
-> "Stop": Stoppt die Eingabeschleife und gibt das Kartenobjekt aus  
+6: wenn gewünscht Link eingeben
+7: wenn gewünscht Kommando eingeben:
+"Stop": Stoppt die Eingabeschleife und gibt das Kartenobjekt aus
 
-Wenn nicht "Stop" eingegeben wird wird weiter nach Hotels abgefragt, bis Stop eingegeben wird. 
+Wenn nicht "Stop" eingegeben wird wird weiter nach Hotels abgefragt, bis Stop eingegeben wird.
 8: Im gleichen Ordner Heatmap.html öffnen
