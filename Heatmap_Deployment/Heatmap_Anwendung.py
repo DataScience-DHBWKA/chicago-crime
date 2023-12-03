@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 import folium as fl
 from folium.plugins import HeatMap
-from folium.plugins import DualMap#
+from folium.plugins import DualMap
 
 #Dataset importieren
 crime_2023 = pd.read_csv('deployment_dataset.csv')

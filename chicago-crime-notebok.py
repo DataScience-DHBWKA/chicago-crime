@@ -152,7 +152,6 @@ os.makedirs('Karten', exist_ok=True)
 
 #Karte ausgeben und speichern
 karte_Chicago.save('Karten/Chicago_Karte.html')
-karte_Chicago
 
 # %% [markdown]
 # Nun werden die Latitude und Longitude Koordinatenpaare jedes im Datenframe "data_cleaned" vorkommenden Verbrechen (siehe oben für eine Liste der darin ausgeschlossenen Verbrechen) im Array lats_long gespeichert. Daraus können wir dann eine Heatmap erstellen, in der alle in der Öffentlichkeit im Jahr 2023 passierten Verbrechen gezeigt werden. Durch die Zoom Funktion besteht auch die Möglichkeit, mit simplen Mausbewegungen einzelne Häuserblöcke und Straßen mit den dort geschehenen Verbrechen anzusehen
@@ -205,8 +204,6 @@ vergleich.save('Karten/Chicago_Vergleich_Heatmap_Satellit.html')
 vergleich
 
 # %% [markdown]
-# Wir können also sehen, das in dichter besiedelten und bebauten Gebieten mehr Verbrechen geschehen. Somit kann man als allgemeine Handlungsempfehlung sagen, das man für einen möglichst sicheren Chicago Trip dicht besiedelte Orte eher meiden sollte.
-#
 # ### Anwendung auf bestimmte Reiseziele
 # Um nun konkretere Reiseempfelungen treffen zu können, sollte man interessante Reiseziele oder Hotels erst in dieser Karte aufsuchen, um deren Sicherheit zu bestimmen. Als Beispiel fügen wir einige Hotels mit deren Koordinaten in der Karte als Marker ein:
 
