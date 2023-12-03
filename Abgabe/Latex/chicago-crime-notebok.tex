@@ -383,14 +383,28 @@
 \begin{document}
 
 
-    \maketitle
-
+    {
+    \Huge{
+    \centering
+\ \\
+\ \\
+\ \\
+Chicago Crime\\
+\ \\
+\ \\
+\ \\
+\ \\
+\ \\
+    }
+    }
     
+    {\huge
     {\centering
-    \author[1]{Benjamin Esch}\\
+    \author[1]{ Benjamin Esch}\\
     \author[2]{ Eduardo Stein Mössner}\\
-    \author[3]{Christof Warsinsky}\\
-    \author[4]{Vincent Merkel}\\
+    \author[3]{ Christof Warsinsky}\\
+    \author[4]{ Vincent Merkel}\\
+    }
     }
     \newpage
     \tableofcontents
@@ -403,9 +417,8 @@
     Für unser Projekt stellen wir uns die Frage, wie man als Privatperson am
 besten einen Trip nach Chicago plant, sodass die Wahrscheinlichkeit in
 ein Verbrechen verwickelt zu werden am Niedrigsten ist.\\
-Chicago gilt als sehr unsichere Stadt, also wollen wir Leuten, die nach
-Chicago reisen wollen, einige auf Statistiken basierende Tipps geben, um
-nicht in Verbrechen verwickelt zu werden.\\
+Chicago gilt als sehr unsichere Stadt, also wollen wir Leuten die nach
+Chicago reisen wollen, einige auf Statistiken basierende Tipps geben, um Verbrechen aus dem Weg zu gehen.\\
 Wir orientierten uns im Allgemeinen am Crisp-DM Prozess um einen
 strukturierten Projektablauf durchführbar zu machen.
 
@@ -414,12 +427,12 @@ strukturierten Projektablauf durchführbar zu machen.
     Um ein wertvolles Ergebnis zu unserer Fragestellung zu erhalten sind die
 Fragen, die wir uns hauptsächlich stellen:\\
 1. In welchen Regionen von Chicago ist es am gefährlichsten?\\
-2. Zu welcher Tageszeit ist es am sichersten sich aus seiner Unterkunft
+2. Zu welcher Tageszeit ist es am sichersten, sich aus seiner Unterkunft
 heraus zu begeben?\\
 3. In welchen Monaten sollte man nach Chicago reisen, um Verbrechen am
 besten zu vermeiden?\\
-4. Ist Chicago in den letzten Jahren ``sicherer'' geworden? 5. Vor
-welchen Verbrechen sollte ich besonders Ausschau halten?
+4. Ist Chicago in den letzten Jahren ``sicherer'' geworden?\\
+5. Vor welchen Verbrechen sollte ich besonders Ausschau halten?\\
 
 Daten, die Ortschaften, Zeiten sowie Verbrechensart enthalten, sind für
 uns also am relevantesten.
@@ -502,7 +515,7 @@ vorliegen haben, um unser weiteres Vorgehen zu planen. 3. Wir wissen,
 wie unsere Merkmalsausprägungen skaliert sind (die meisten nominal, aber
 z.B. die Spalte ``Description'' ist ordinal skaliert.) 4. Wir können
 einordnen in welchen Datentypen die jeweiligen Daten gespeichert sind,
-und wissen, wie wir weiter mit diesen vorgehen müssen.
+und wissen wie wir weiter mit diesen vorgehen müssen.
 
     \section{Data Preparation}\label{data-preparation}
 
@@ -636,7 +649,7 @@ Touristenattraktionen und andere Orte von Menschenansammlungen verändern
 und verschieben sich, wenn neue Orte ausgebaut werden und alte
 Geschäfte/Viertel geschlossen werden. Deswegen werden wir für die
 Heatmap nur die Verbrechen beachten, die dieses Jahr geschehen sind.
-Dieser Zeitraum wurde so gewählt, weil so in den vergangenen 11 Monaten
+Dieser Zeitraum wurde so gewählt, weil in den vergangenen 11 Monaten
 genügend Daten angefallen sind und die Geodaten aber trotzdem aktuell
 genug sein sollten, um verlässliche Aussagen über die Sicherheit der
 Orte zu treffen. Außerdem sind die Daten so weniger stark beeinflusst
@@ -787,6 +800,7 @@ Um nun konkretere Reiseempfehlungen treffen zu können, sollte man
 interessante Reiseziele oder Hotels erst in dieser Karte aufsuchen, um
 deren Sicherheit zu bestimmen. Als Beispiel fügen wir einige Hotels mit
 deren Koordinaten in der Karte als Marker ein:
+\ \\
 
     \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
 \prompt{In}{incolor}{13}{\boxspacing}
