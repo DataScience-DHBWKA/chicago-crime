@@ -10,7 +10,7 @@ Wir finden eine spannende und passende frage zu unserem Projekt wäre, wie sollt
 - Welche regionen sind am gefährlichsten in Chicago?
 - Wo sind die meiste schwerwiegende verbrechen geschehen?
 
-
+## Zur Evaluation unserer Arbeit gibt es das Portfolio als Pdf im Ordner Abgabe
 ## Installation:
 In einem Python Enviroment mit
 cd <Ordnerpfad>
