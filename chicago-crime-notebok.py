@@ -204,6 +204,9 @@ vergleich.save('Karten/Chicago_Vergleich_Heatmap_Satellit.html')
 vergleich
 
 # %% [markdown]
+# Es ist erkennbar, dass an manchen Orten die Bebauungsdichte mit der Verbrechenshäufigkeit korreliert. Besonders in Downtown Chicago ist das der Fall. Auf dem Rest der Karte ist diese Korrelation aber meist nicht aufzufinden. Deshalb kann man nicht generell sagen, dass eine hohe Bebauungsdichte (und somit in der Regel auch eine hohe Bevölkerungsdichte) immer zu einer erhöhten Verbrechenshäufigkeit führt.
+
+# %% [markdown]
 # ### Anwendung auf bestimmte Reiseziele
 # Um nun konkretere Reiseempfehlungen treffen zu können, sollte man interessante Reiseziele oder Hotels erst in dieser Karte aufsuchen, um deren Sicherheit zu bestimmen. Als Beispiel fügen wir einige Hotels mit deren Koordinaten in der Karte als Marker ein:
 
