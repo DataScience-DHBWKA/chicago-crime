@@ -84,7 +84,7 @@
     
     % Colors for the hyperref package
     \definecolor{urlcolor}{rgb}{0,.145,.698}
-    \definecolor{linkcolor}{rgb}{.71,0.21,0.01}
+    \definecolor{linkcolor}{rgb}{0,0,0}
     \definecolor{citecolor}{rgb}{.12,.54,.11}
 
     % ANSI colors
@@ -378,19 +378,24 @@
     % Slightly bigger margins than the latex defaults
     
     \geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
-    
-    
+    \renewcommand*\contentsname{Inhaltsverzeichnis}
 
 \begin{document}
 
+    \Huge{
     \maketitle
+    }
+    \Large{
+    {\centering
     \author[1]{Benjamin Esch}\\
     \author[2]{ Eduardo Stein-Mössner}\\
     \author[3]{Christof Warsinsky}\\
     \author[4]{Vincent Merkel}\\
+    }
+    \newpage
     \tableofcontents
     \newpage
-    
+    }
 
     
     \section{Fragestellung}\label{fragestellung}
