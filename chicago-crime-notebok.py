@@ -17,19 +17,19 @@
 # # Fragestellung
 
 # %% [markdown]
-# Für unser Projekt stellen wir uns die Frage, wie man als Privatperson am Besten einen Trip nach Chicago plant, sodass die Wahrscheinlichkeit in ein Verbrechen verwickelt zu werden 
+# Für unser Projekt stellen wir uns die Frage, wie man als Privatperson am besten einen Trip nach Chicago plant, sodass die Wahrscheinlichkeit in ein Verbrechen verwickelt zu werden 
 # am Niedrigsten ist.  
-# Chicago gilt als sehr unsichere Stadt, also wollen wir Leuten, die nach Chicago reisen wollen, einige auf Statistiken basierende Tips geben, um nicht in Verbrechen verwickelt zu werden.  
+# Chicago gilt als sehr unsichere Stadt, also wollen wir Leuten, die nach Chicago reisen wollen, einige auf Statistiken basierende Tipps geben, um nicht in Verbrechen verwickelt zu werden.  
 # Wir orientierten uns im Allgemeinen am Crisp-DM Prozess um einen strukturierten Projektablauf durchführbar zu machen.
 
 # %% [markdown]
 # # Business Understanding
 
 # %% [markdown]
-# Um eine wertvolles Ergebnis zu unserer Fragestellung zu erhalten sind die Fragen, die wir uns hauptsächlich stellen:  
-#     1. In welchen Regionen von Chicago ist es am Gefährlichsten?  
-#     2. Zu welcher Tageszeit ist es am Sichersten sich aus seiner Unterkunft heraus zu begeben?  
-#     3. In welchen Monaten sollte man nach Chicago reisen, um Verbrechen am Besten zu vermeiden?  
+# Um ein wertvolles Ergebnis zu unserer Fragestellung zu erhalten sind die Fragen, die wir uns hauptsächlich stellen:  
+#     1. In welchen Regionen von Chicago ist es am gefährlichsten?  
+#     2. Zu welcher Tageszeit ist es am sichersten sich aus seiner Unterkunft heraus zu begeben?  
+#     3. In welchen Monaten sollte man nach Chicago reisen, um Verbrechen am besten zu vermeiden?  
 #     4. Ist Chicago in den letzten Jahren "sicherer" geworden?
 #     5. Vor welchen Verbrechen sollte ich besonders Ausschau halten?  
 #     
@@ -72,8 +72,8 @@ print('Der Datensatz hat',chicago_crime_data.shape[1],'Spalten und',chicago_crim
 # Hieraus können wir folgende, für uns weitergehend wichtige Erkenntnisse ziehen:
 # 1. Wir wissen unser Code hat 7931583 Einträge mit 22 Datenspalten.
 # 2. Wir haben eine Vorstellung davon, welche Daten wir vorliegen haben, um unser weiteres Vorgehen zu planen.
-# 3. Wir wissen wie unsere Merkmalsausprägungen skaliert sind (die meisten nominal, aber z.B. die Spalte "Description" ist ordinal skaliert.)
-# 4. Wir können einordnen in welchen Datentypen die jeweiligen Daten gespeichert sind, und wissen wie wir weiter mit diesen vorgehen müssen.
+# 3. Wir wissen, wie unsere Merkmalsausprägungen skaliert sind (die meisten nominal, aber z.B. die Spalte "Description" ist ordinal skaliert.)
+# 4. Wir können einordnen in welchen Datentypen die jeweiligen Daten gespeichert sind, und wissen, wie wir weiter mit diesen vorgehen müssen.
 
 # %% [markdown]
 # # Data Preparation
@@ -93,7 +93,7 @@ print("Pro Spalte fehlen: ")
 print(null_daten_count)
 
 # %% [markdown]
-# Fehlende Werte (NaN) im Datensatz können manche Auswertungen erschweren oder sogar unmöglich machen. Unser Datensatz hat 7,9 Millionen Reihen, deshalb können wir ohne Probleme Reihen mit NaN löschen, ohne die Statistische Relevanz der Auswertung zu verlieren. Deshalb löschen wir mit .dropna() alle Reihen aus unserem Datansatz, die mindestens ein NaN haben: 
+# Fehlende Werte (NaN) im Datensatz können manche Auswertungen erschweren oder sogar unmöglich machen. Unser Datensatz hat 7,9 Millionen Reihen, deshalb können wir ohne Probleme Reihen mit NaN löschen, ohne die Statistische Relevanz der Auswertung zu verlieren. Deshalb löschen wir mit .dropna() alle Reihen aus unserem Datensatz, die mindestens ein NaN haben: 
 
 # %%
 data_cleaned = chicago_crime_data.dropna(ignore_index='true')
@@ -117,7 +117,7 @@ print("Der Datensatz hat nach dem Data Cleaning noch " + str(data_cleaned.shape[
 # %% [markdown]
 # *Die Anzahl an Reihen ist dabei mehr als 1 Prozent gesunken, da pro fehlender Wert die gesamte Reihe an Daten (22 Datenfelder) gelöscht wird, nicht nur das fehlende Datenfeld*
 #
-# ## Auschließung von häuslichen Verbrechen
+# ## Ausschließung von häuslichen Verbrechen
 # Da wir mit unserer Auswertung herausfinden wollen, wo ein Urlaubstrip nach Chicago am sichersten ist, können wir alle Verbrechen aus dem Datensatz herausfiltern, die nicht in der Öffentlichkeit geschehen sind. Häusliche Verbrechen betreffen uns als Urlauber schließlich eher nicht.
 
 # %%
@@ -135,7 +135,7 @@ data_cleaned = crimes_public
 # ## Heatmap von Chicago
 
 # %% [markdown]
-# Große Städte verändern sich ständig. Stadtmittelpunkte, Touristenattraktionen und andere Orte von Menschenansammlungen verändern und verschieben sich, wenn neue Orte ausgebaut werden und alte Geschäfte/Viertel geschlossen werden. Deswegen werden wir für die Heatmap nur die Verbrechen beachten, die dieses Jahr geschehen sind. Dieser Zeitraum wurde so gewählt, weil so in den vergangenen 11 Monaten genügend Daten angefallen sind und die Geodaten aber trotzdem aktuell genug sein sollten, um verlässliche Aussagen über die Sicherheit der Orte zu treffen. Außerdem sind die Daten so weniger stark beinflusst von den temporär veränderten Öffentlichkeitsaufhalten der Bevölkerungen durch die Covid 19 Pandemie und deren Lockdowns, da im Jahr 2023 generell die meisten Beschränkungen aufgehoben wurden. 
+# Große Städte verändern sich ständig. Stadtmittelpunkte, Touristenattraktionen und andere Orte von Menschenansammlungen verändern und verschieben sich, wenn neue Orte ausgebaut werden und alte Geschäfte/Viertel geschlossen werden. Deswegen werden wir für die Heatmap nur die Verbrechen beachten, die dieses Jahr geschehen sind. Dieser Zeitraum wurde so gewählt, weil so in den vergangenen 11 Monaten genügend Daten angefallen sind und die Geodaten aber trotzdem aktuell genug sein sollten, um verlässliche Aussagen über die Sicherheit der Orte zu treffen. Außerdem sind die Daten so weniger stark beeinflusst von den temporär veränderten Öffentlichkeitsaufhalten der Bevölkerungen durch die Covid 19 Pandemie und deren Lockdowns, da im Jahr 2023 generell die meisten Beschränkungen aufgehoben wurden. 
 #
 # Wir erstellen also ein neues Dataframe, in dem nur die im Jahr 2023 geschehenen Verbrechen enthalten sind:
 
@@ -144,7 +144,7 @@ crimes_2023 = data_cleaned.loc[data_cleaned['Year'] == 2023]
 
 # %% [markdown]
 # ### Kartenerstellung
-# Wir beginnen, indem wir ein neues Kartenobjekt mit dem Namen "karte_Chicago" erstellen, dessen Mittelpunkt eine Koordinate in Chicago ist. Außerdem erstellen wir einen Ordner (falls dieser nicht bereits exisitert), in dem wir alle Karten speichern werden:
+# Wir beginnen, indem wir ein neues Kartenobjekt mit dem Namen "karte_Chicago" erstellen, dessen Mittelpunkt eine Koordinate in Chicago ist. Außerdem erstellen wir einen Ordner (falls dieser nicht bereits existiert), in dem wir alle Karten speichern werden:
 
 # %%
 karte_Chicago = fl.Map(location = [41.863474, -87.613654], zoom_start = 11, control_scale=True,)
@@ -155,7 +155,7 @@ karte_Chicago.save('Karten/Chicago_Karte.html')
 karte_Chicago
 
 # %% [markdown]
-# Nun werden die Latitude und Longitude Koordinatenpaare jedes im Datenframe "data_cleaned" vorkommenden Verbrechen (siehe oben für eine Liste der darin ausgeschlossenen Verbrechen) im Array lats_long gespeichert. Daraus können wir dann eine Heatmap erstellen, in der alle in der Öffentlichkeit im Jahr 2023 passierten Verbrechen gezeigt werden. Durch die Zoom Funktion besteht auch die Möglichkeit, mit simplen Mausbewegungen einzelne Häuserblöcke und Straßen mit den dort geschehenen Verbrechen anzusehen
+# Nun werden die Latitude und Longitude Koordinatenpaare jedes im Datenframe "data_cleaned" vorkommenden Verbrechen (siehe oben für eine Liste der darin ausgeschlossenen Verbrechen) im Array lats_long gespeichert. Daraus können wir dann eine Heatmap erstellen, in der alle in der Öffentlichkeit im Jahr 2023 passierten Verbrechen gezeigt werden. Durch die Zoom Funktion besteht auch die Möglichkeit, mit simplen Mausbewegungen einzelne Häuserblöcke und Straßen mit den dort geschehenen Verbrechen anzusehen.
 
 # %%
 lat_long = crimes_2023[['Latitude', 'Longitude']].values.tolist()
@@ -170,13 +170,13 @@ karte_Chicago_Heatmap
 # Aus der Verteilung der Verbrechen in Chicago kann man den Schluss ziehen, das es in dichter besiedelten Gebieten mehr Verbrechen gibt. Um dies zu bestätigen, können wir mit der Folium Library auch einen Vergleich der Heatmap mit einer leeren Satellitenkarte herstellen.
 #
 # ### Vergleich mit Satellitenbildern
-# Dafür erstellern wir zuerst ein neues Folium DualMap Kartenobjekt "vergleich":
+# Dafür erstellen wir zuerst ein neues Folium DualMap Kartenobjekt "vergleich":
 
 # %%
 vergleich = fl.plugins.DualMap(location=(41.849429, -87.597334), tiles=None, zoom_start=11, control_scale=True,)
 
 # %% [markdown]
-# Daraufhin erstellen wir die zwei untergeordneten Kartenobjekte m1 und m2, die zum Dualmap Kartenobjekt "vergleich" gehören. Als Kartenquelle fügen wir für beide Karten die Api der Satellitenkarte "Esri World Imagery" ein, die frei verfügbar ist:
+# Daraufhin erstellen wir die zwei untergeordneten Kartenobjekte m1 und m2, die zum Dualmap Kartenobjekt "vergleich" gehören. Als Kartenquelle fügen wir für beide Karten die API der Satellitenkarte "Esri World Imagery" ein, die frei verfügbar ist:
 #
 # https://www.arcgis.com/home/item.html?id=10df2279f9684e4a9f6a7f08febac2a9
 
@@ -205,10 +205,10 @@ vergleich.save('Karten/Chicago_Vergleich_Heatmap_Satellit.html')
 vergleich
 
 # %% [markdown]
-# Wir können also sehen, das in dichter besiedelten und bebauten Gebieten mehr Verbrechen geschehen. Somit kann man als allgemeine Handlungsempfehlung sagen, das man für einen möglichst sicheren Chicago Trip dicht besiedelte Orte eher meiden sollte.
+# Wir können also sehen, dass in dichter besiedelten und bebauten Gebieten mehr Verbrechen geschehen. Somit kann man als allgemeine Handlungsempfehlung sagen, dass man für einen möglichst sicheren Chicago Trip dicht besiedelte Orte eher meiden sollte.
 #
 # ### Anwendung auf bestimmte Reiseziele
-# Um nun konkretere Reiseempfelungen treffen zu können, sollte man interessante Reiseziele oder Hotels erst in dieser Karte aufsuchen, um deren Sicherheit zu bestimmen. Als Beispiel fügen wir einige Hotels mit deren Koordinaten in der Karte als Marker ein:
+# Um nun konkretere Reiseempfehlungen treffen zu können, sollte man interessante Reiseziele oder Hotels erst in dieser Karte aufsuchen, um deren Sicherheit zu bestimmen. Als Beispiel fügen wir einige Hotels mit deren Koordinaten in der Karte als Marker ein:
 
 # %%
 #Refernenzkopie der Karte auf ein neues Kartenobjekt, Zentrieren auf die Koordinaten von Hotel 2
@@ -238,11 +238,11 @@ marker_Chicago_Heatmap.save('Karten/Chicago_Heatmap_Marker.html')
 marker_Chicago_Heatmap
 
 # %% [markdown] jp-MarkdownHeadingCollapsed=true
-# Durch einen klick mit dem Mauszeiger kann auch direkt auf der Karte der Name des Hotels und der entsprechende Google Maps link eingesehen werden. Da aber nicht jeder die Karte interaktiv zur Hand haben wird, sind hier auch noch einmal die Informationen sowie die Sicherheitseinschätzung des Gebiets dem Datensatz zufolge aufgelistet:
+# Durch einen Klick mit dem Mauszeiger kann auch direkt auf der Karte der Name des Hotels und der entsprechende Google Maps link eingesehen werden. Da aber nicht jeder die Karte interaktiv zur Hand haben wird, sind hier auch noch einmal die Informationen sowie die Sicherheitseinschätzung des Gebiets dem Datensatz zufolge aufgelistet:
 #
 # 1: Das "W Chicago - Lakeshore" Hotel ist offensichtlich keine gute Wahl, da der roten Umgebungsfarbe nach zu urteilen die Umgebung nicht sehr sicher ist.  
-# 2: Das "The Allegro Royal Sonesta Hotel Chicago Loop" Hotel liegt in einem sehr roten Berreich, deshalb ist dem Datensatz nach zu schließen auch dieses Hotel und der umliegende Berreich zu meiden.  
-# 3: Das "The Polo Inn Bed & Breakfast" Hotel dagegen ist im Vergleich zum Rest von Chicago in einem sichereren Berreich, und ist deshalb dem Datensatz zufolge zu empfehlen
+# 2: Das "The Allegro Royal Sonesta Hotel Chicago Loop" Hotel liegt in einem sehr roten Bereich, deshalb ist dem Datensatz nachzuschließen auch dieses Hotel und der umliegende Bereich zu meiden.  
+# 3: Das "The Polo Inn Bed & Breakfast" Hotel dagegen ist im Vergleich zum Rest von Chicago in einem sichereren Bereich, und ist deshalb dem Datensatz zufolge zu empfehlen
 #
 # ### Anwendung auf andere Hotels/Reiseziele
 # #### Manuelle Verwendung der Karte
@@ -260,7 +260,7 @@ marker_Chicago_Heatmap
 # ## Sichere Tageszeiten?
 
 # %% [markdown]
-# Hier stellen wir die jeweilige Tageszeiten, zu denen Verbrechen geschehen sind, als Histogramm dar.
+# Hier stellen wir die jeweiligen Tageszeiten, zu denen Verbrechen geschehen sind, als Histogramm dar.
 # Wir müssen zuerst die Date Spalte von Objects zu Datetimes konvertieren, um dann mit diesen einen Plot erstellen zu können, indem wir aus der Datetime direkt die Stunde rausziehen.
 
 # %%
@@ -276,7 +276,7 @@ fig.set(xlabel='Hour', ylabel='Amount of commited Crimes');
 # Man sieht deutlich, dass nachts (5 Uhr) am wenigsten Verbrechen geschehen, und diese fast stetig bis 18 Uhr zunehmen, und diese Anzahl sich wieder bis 5 Uhr verringert. Ausnahme davon sind 0 und 12 Uhr, unsere Vermutung hier ist, dass Verbrechen, bei denen nur eine ungefähre Uhrzeit zur Verfügung stand, entweder auf 0 oder auf 12 Uhr ab/aufgerundet wurden.
 #
 # Auf ersten Blick würde man also denken, dass die sicherste Tageszeit für einen Trip die Nacht wäre, aber da nachts normalerweise weniger Menschen aktiv sind, ist diese Statistik etwas trügerisch.
-# Unser Fazit hier ist, dass wir aus diesem Histogramm leider keine erkenntliche Einsicht über eine empfehlenswerte Tageszeit zum rausgehen gewinnen können.
+# Unser Fazit hier ist, dass wir aus diesem Histogramm leider keine erkenntliche Einsicht über eine empfehlenswerte Tageszeit zum Rausgehen gewinnen können.
 
 # %% [markdown]
 # ## Sichere Jahreszeiten?
@@ -311,14 +311,14 @@ plt.show()
 
 # %% [markdown]
 # Man kann deutlich sehen, dass die Anzahl der Verbrechen im Vergleich zu den Anderen Jahreszeiten im Winter stark sinkt, während im Sommer mehr Verbrechen geschehen.
-# Für einen Trip nach Chicago würde sich also definitv der Winter anbieten!
+# Für einen Trip nach Chicago würde sich also definitiv der Winter anbieten!
 
 # %% [markdown]
 # ## Klassifizierung der Verbrechen
 # ### Klassifizierung
 
 # %% [markdown]
-# In unserem Datensatz sowie im echten Leben gibt es viele verschiedene Verbrechenskategorien. Diese variieren von vergleichsweise harmlosen Gesetzesverstößen wie Taschendiebstahl bis hin zu schweren Verbrechen wie Mord. Nicht alle Verbrechen betreffen uns aber als Urlauber in Chicago. 'LIQUOR LAW VIOLATION', d.H. ein Spirituosen Gesetzes Verstoß betrifft und als Urlauber nicht, obwohl es durchaus für die  Stadt ein größeres Problem darstellen könnte. Deshalb teilen wir die vielen verschiedenen Verbrechensarten in die zwei Kategorien schwerwiegend_Urlaub und belanglos_Urlaub ein. Besonders schwerwiegende Verbrechen, wie zum Beispiel solche, die schwere Sach-, Personen- oder psyschiche Schäden verursachen werden und von welchen wir als Urlauber ebenfalls potenziell betroffen sein könnten, werden als als schwerwiegend eingestuft, Verbrechen die eher geringfügige Schäden verursachen werden hingegen als weniger schwerwiegend eingestuft.
+# In unserem Datensatz sowie im echten Leben gibt es viele verschiedene Verbrechenskategorien. Diese variieren von vergleichsweise harmlosen Gesetzesverstößen wie Taschendiebstahl bis hin zu schweren Verbrechen wie Mord. Nicht alle Verbrechen betreffen uns aber als Urlauber in Chicago. 'LIQUOR LAW VIOLATION', d.h. ein Spirituosen Gesetzes Verstoß betrifft und als Urlauber nicht, obwohl es durchaus für die Stadt ein größeres Problem darstellen könnte. Deshalb teilen wir die vielen verschiedenen Verbrechensarten in die zwei Kategorien schwerwiegend_Urlaub und belanglos_Urlaub ein. Besonders schwerwiegende Verbrechen, wie zum Beispiel solche, die schwere Sach-, Personen- oder psychische Schäden verursachen werden und von welchen wir als Urlauber ebenfalls potenziell betroffen sein könnten, werden als schwerwiegend eingestuft, Verbrechen die eher geringfügige Schäden verursachen werden hingegen als weniger schwerwiegend eingestuft.
 #
 # Dazu rufen wir zunächst alle einzigartigen Verbrechensarten in der Kategorie 'Primary Type' auf und geben die daraus resultierende Liste mit print() aus:
 
@@ -394,7 +394,7 @@ schwere_verbrechen_2021_anzahl = schwere_verbrechen_2021.groupby('Primary Type')
 schwere_verbrechen_2022_anzahl = schwere_verbrechen_2022.groupby('Primary Type').size().sort_values(ascending=False)
 
 # %% [markdown]
-# Zuletzt wird für jede Art Schwerwiegender Verbrechen die Zunahme berechnet und die Ergebnisse in einem Diagramm gezeigt
+# Zuletzt wird für jede Art Schwerwiegender Verbrechen die Zunahme berechnet und die Ergebnisse in einem Diagramm gezeigt.
 
 # %%
 zunahme_schwere_verbrechen_2022_vs_2021 = schwere_verbrechen_2022_anzahl - schwere_verbrechen_2021_anzahl
@@ -409,15 +409,15 @@ plt.show()
 # Es ist klar zu erkennen, dass Verbrechen, die mit Diebstahl zu tun haben, im Jahr 2022 stark gewachsen sind.
 #
 # ### Schlussfolgerungen und Implikationen:
-# Nach der durchgeführten Analyse ist es schlusszufolgern, dass die Anzahl der gemeldeten Straftaten seit 2001 stark gesunken ist, was eine positive Entwicklung nachweist.
-# Nicht desto trotz ist die Anzahl der gemeldeten Diebstahlfälle im Jahr 2022 im Vergleich zum Jahr 2021 stark gewachsen, deswegen ist es ratsam, in einem Trip nach Chicago dies bei der Reisevorbereitung zu beachten und wertvolle Gegenstände nicht mit sich mitzunehmen.  
+# Nach der durchgeführten Analyse ist zu schlussfolgern, dass die Anzahl der gemeldeten Straftaten seit 2001 stark gesunken ist, was eine positive Entwicklung nachweist.
+# Nichts desto trotz ist die Anzahl der gemeldeten Diebstahlfälle im Jahr 2022 im Vergleich zum Jahr 2021 stark gewachsen, deswegen ist es ratsam, in einem Trip nach Chicago dies bei der Reisevorbereitung zu beachten und wertvolle Gegenstände nicht mit sich mitzunehmen.  
 # Schlussfolgernd kann man aber sagen, dass Chicago heute viel sicherer ist im Vergleich zu früheren Jahren.
 #
 # # Evaluation
-#  Unsere Antworten zu den am Anfang gestellten Fragen sind also wiefolgt:  
+#  Unsere Antworten zu den am Anfang gestellten Fragen sind also wie folgt:  
 #    1. Aus der Heatmap kann man deutlich die gefährlichsten Ortschaften direkt herauslesen. womit wir eine gute Einschätzung der Gefährlichkeit vornehmen können.
 #    2. Eine besonders sichere Tageszeit lässt sich nicht direkt erkennen.
-#    3. Für eine sichere Reise nach Chicago bieten sich die Wintermonate am Meisten an.
+#    3. Für eine sichere Reise nach Chicago bieten sich die Wintermonate am meisten an.
 #    4. Verbrechen in Chicago sind über die Jahre deutlich gesunken, die Stadt arbeitet also daran, ihren Ruf zu verbessern!
 #    5. Als Urlauber sollte man sich vor allem vor Diebstahl in Acht nehmen.
 #    
