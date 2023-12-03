@@ -9,14 +9,14 @@
 \contentsline {subsubsection}{\numberline {5.1.1}Kartenerstellung}{10}{subsubsection.5.1.1}%
 \contentsline {subsubsection}{\numberline {5.1.2}Vergleich mit Satellitenbildern}{11}{subsubsection.5.1.2}%
 \contentsline {subsubsection}{\numberline {5.1.3}Anwendung auf bestimmte Reiseziele}{13}{subsubsection.5.1.3}%
-\contentsline {subsubsection}{\numberline {5.1.4}Anwendung auf andere Hotels/Reiseziele}{14}{subsubsection.5.1.4}%
-\contentsline {paragraph}{Manuelle Verwendung der Karte}{14}{section*.2}%
-\contentsline {paragraph}{Abfragen basierte Verwendung der Karte}{14}{section*.3}%
+\contentsline {subsubsection}{\numberline {5.1.4}Anwendung auf andere Hotels/Reiseziele}{15}{subsubsection.5.1.4}%
+\contentsline {paragraph}{Manuelle Verwendung der Karte}{15}{section*.2}%
+\contentsline {paragraph}{Abfragen basierte Verwendung der Karte}{15}{section*.3}%
 \contentsline {subsection}{\numberline {5.2}Sichere Tageszeiten?}{15}{subsection.5.2}%
 \contentsline {subsection}{\numberline {5.3}Sichere Jahreszeiten?}{16}{subsection.5.3}%
-\contentsline {subsection}{\numberline {5.4}Klassifizierung der Verbrechen}{17}{subsection.5.4}%
-\contentsline {subsubsection}{\numberline {5.4.1}Klassifizierung}{17}{subsubsection.5.4.1}%
-\contentsline {subsubsection}{\numberline {5.4.2}Gruppierung nach Jahren}{19}{subsubsection.5.4.2}%
-\contentsline {subsubsection}{\numberline {5.4.3}Schlussfolgerungen und Implikationen:}{22}{subsubsection.5.4.3}%
-\contentsline {section}{\numberline {6}Evaluation}{23}{section.6}%
-\contentsline {section}{\numberline {7}Deployment}{23}{section.7}%
+\contentsline {subsection}{\numberline {5.4}Klassifizierung der Verbrechen}{18}{subsection.5.4}%
+\contentsline {subsubsection}{\numberline {5.4.1}Klassifizierung}{18}{subsubsection.5.4.1}%
+\contentsline {subsubsection}{\numberline {5.4.2}Gruppierung nach Jahren}{20}{subsubsection.5.4.2}%
+\contentsline {subsubsection}{\numberline {5.4.3}Schlussfolgerungen und Implikationen:}{23}{subsubsection.5.4.3}%
+\contentsline {section}{\numberline {6}Evaluation}{24}{section.6}%
+\contentsline {section}{\numberline {7}Deployment}{24}{section.7}%
